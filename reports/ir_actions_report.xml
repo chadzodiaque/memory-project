@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?> 
+
+<odoo> 
+
+   <record id="action_report_policy_template" model="ir.actions.report"> 
+       <field name="name">Rapport police d'assurance</field > 
+       <field name="model">insurance.security.policy</field> 
+       <field name="report_type">qweb-pdf</field> 
+       <field name="report_name">insurance_security.report_policy</field> 
+       <field name= "report_file">insurance_security.report_policy</field> 
+       <field name="print_report_name">'Police d\'assurance - %s' % (object.name)</field> 
+       <field name="binding_model_id" ref="model_insurance_security_policy" /> 
+       <field name="binding_type">report</field> 
+   </record> 
+
+</odoo>

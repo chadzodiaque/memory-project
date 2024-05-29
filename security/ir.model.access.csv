@@ -1,0 +1,8 @@
+id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
+access_insurance_security_type,access.insurance.security.type,model_insurance_security_type,base.group_user,1,1,1,1
+access_insurance_security_policy,access.insurance.security.policy,model_insurance_security_policy,base.group_user,1,1,1,1
+access_insurance_security_claims,access.insurance.security.claims,model_insurance_security_claims,base.group_user,1,1,1,1
+access_insurance_security_demand,access.insurance.security.demand,model_insurance_security_demand,base.group_user,1,1,1,1
+access_insurance_security_product,access.insurance.security.product,model_insurance_security_product,base.group_user,1,1,1,1
+
+

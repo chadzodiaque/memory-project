@@ -1,0 +1,1487 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+   <!--  Menu permettant d'afficher les polices d'assurance d'une personne -->
+    <template id="portal_my_home_insurance"  inherit_id="portal.portal_my_home">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="url">/my/insurance</t>
+                <t t-set="title">My Insurance</t>
+                <t t-set="placeholder_count" t-value="'insurance_count'"/>
+            </t>
+        </xpath>
+        
+    </template>
+
+    <template id="portal_breadcrumbs"  inherit_id="portal.portal_breadcrumbs">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'portal_my_insurance'" class="breadcrumb-item ">
+                Mon assurance
+            </li>
+            <li t-if="page_name == 'portal_list_assistances'" class="breadcrumb-item ">
+                <a href="/my/insurance/">Mon assurance</a> / <span>Mes demande d'assistance</span>
+            </li>
+            <li t-if="page_name == 'portal_list_policies'" class="breadcrumb-item ">
+                <a href="/my/insurance/">Mon assurance</a> / <span>Mes polices d'assurance</span>
+            </li>
+            <li t-if="page_name == 'portal_list_demands'" class="breadcrumb-item ">
+                <a href="/my/insurance/">Mon assurance</a> / <span>Mes demandes d'assurance</span>
+            </li>
+            <li t-if="page_name == 'portal_list_claims'" class="breadcrumb-item ">
+                <a href="/my/insurance/">Mon assurance</a> / <span>Mes réclamations d'assurance</span>
+            </li>
+            <li t-if="page_name == 'portal_list_payments'" class="breadcrumb-item ">
+                <a href="/my/insurance/">Mon assurance</a> / <span>Mes versements en prime d'assurance</span>
+            </li>
+            <li t-if="page_name == 'portal_assistances_form_view'" class="breadcrumb-item ">
+                <a href="/my/insurance/">Mon assurance</a> / <a href="/my/insurance/assistances">Mes polices d'assurance</a> / <span t-out="assistance.name"/>
+            </li>
+            <li t-if="page_name == 'portal_policies_form_view'" class="breadcrumb-item ">
+                <a href="/my/insurance/">Mon assurance</a> / <a href="/my/insurance/policies">Mes polices d'assurance</a> / <span t-out="policy.name"/>
+            </li>
+            <li t-if="page_name == 'portal_demands_form_view'" class="breadcrumb-item ">
+                <a href="/my/insurance/">Mon assurance</a> / <a href="/my/insurance/demands">Mes demandes d'assurance</a> / <span t-out="demand.name"/>
+            </li>
+            <li t-if="page_name == 'portal_claims_form_view'" class="breadcrumb-item ">
+                <a href="/my/insurance/">Mon assurance</a> / <a href="/my/insurance/claims">Mes réclamations d'assurance</a> / <span t-out="claim.name"/>
+            </li>
+            <li t-if="page_name == 'portal_payments_form_view'" class="breadcrumb-item ">
+                <a href="/my/insurance/">Mon assurance</a> / <a href="/my/insurance/payments">Mes versements en prime d'assurance</a> / <span t-out="payment.name"/>
+            </li>
+            <li t-if="page_name == 'portal_new_demand_assistance'" class="breadcrumb-item ">
+                <a href="/my/insurance/">Mon assurance</a> / <a href="/my/insurance/assistances">Mes demandes d'assistance</a> / <span>Nouvelle demande</span>
+            </li>
+            <li t-if="page_name == 'portal_new_demand_insurance'" class="breadcrumb-item ">
+                <a href="/my/insurance/">Mon assurance</a> / <a href="/my/insurance/demands">Mes demandes d'assurance</a> / <a href="/my/insurance/demands/new/demand/products"> Nouvelle demande / Mes demandes d'assurance</a> / demandproduct / <span t-out="product.id"/>
+            </li>
+            <li t-if="page_name == 'portal_list_products'" class="breadcrumb-item ">
+                <a href="/my/insurance/">Mon assurance</a> / <a href="/my/insurance/demands">Mes demandes d'assurance</a> /  <span>Nouvelle demande</span> / <span>Liste des produits</span>
+            </li>
+            <li t-if="page_name == 'portal_product_description_view'" class="breadcrumb-item ">
+                <a href="/my/insurance/">Mon assurance</a> / <a href="/my/insurance/demands">Mes demandes d'assurance</a>  / <a href="/my/insurance/demands/new/demand/products"> Nouvelle demande / Mes demandes d'assurance</a> / <span t-out="product.id"/>
+            </li>
+            <li t-if="page_name == 'portal_new_claim_insurance'" class="breadcrumb-item ">
+                <a href="/my/insurance/">Mon assurance</a> / <a href="/my/insurance/claims">Mes réclamations d'assurance</a> /  <span>Nouvelle réclamation</span>
+            </li>
+            
+        </xpath>
+    </template>
+
+    <!-- Menu des assurances -->
+    <template id="portal_my_insurance">
+        <t t-call="portal.portal_layout">
+            <div class="row my-4">
+                <div class="col-sm-3">
+                    <div class="card rounded-top text-center">
+                        <div class="card-body ">
+                            <img src="/insurance_security/static/images/Insurance-pana.png" class="card-img-top" />
+                            <h5 class="card-title my-2 ">Mes polices d'assurance </h5>           
+                            <a t-attf-href="/my/insurance/policies" class="btn btn-primary">Allez <span class="badge badge-primary text-bg-light text-center rounded-pill"> <t t-out="insurance_policy_count"/> </span>  </a>
+                            
+                        </div> 
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="card text-center">
+                        <div class="card-body ">
+                            <img src="/insurance_security/static/images/Insurance-amico.png" class="card-img-top" />
+                            <h5 class="card-title my-2 ">Mes réclamations d'assurance </h5>           
+                            <a t-attf-href="/my/insurance/claims" class="btn btn-primary">Allez <span class="badge badge-primary text-bg-light text-center rounded-pill"> <t t-out="insurance_claims_count"/>  </span>  </a>
+                
+                        </div> 
+                    </div>
+                </div>
+                
+                <div class="col-sm-3">
+                    <div class="card text-center">
+                        <div class="card-body ">
+                            <img src="/insurance_security/static/images/Insurance-cuate.png" class="card-img-top" />
+                            <h5 class="card-title my-2 ">Mes demandes d'assurance </h5>           
+                            <a t-attf-href="/my/insurance/demands" class="btn btn-primary">Allez <span class="badge badge-primary text-bg-light text-center rounded-pill"><t t-out="insurance_demand_count"/></span>  </a>
+                            
+                        </div> 
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="card text-center">
+                        <div class="card-body ">
+                            <img src="/insurance_security/static/images/Money-income.png" class="card-img-top" />
+                            <h5 class="card-title my-2 ">Mes versements d'assurance </h5>           
+                            <a t-attf-href="/my/insurance/payments" class="btn btn-primary">Allez <span class="badge badge-primary text-bg-light text-center rounded-pill"> <t t-out="insurance_payments_count"/> </span>  </a>
+                            
+                        </div> 
+                    </div>
+                </div>
+                
+                <div class="col-sm-3">
+                    <div class="card text-center">
+                        <div class="card-body ">
+                            <img src="/insurance_security/static/images/Active Support-rafiki.png" class="card-img-top" />
+                            <h5 class="card-title my-2 ">Service d'assistance </h5>           
+                            <a t-attf-href="/my/insurance/assistances" class="btn btn-primary">Allez <span class="badge badge-primary text-bg-light text-center rounded-pill"> <t t-out="insurance_assistance_count"/> </span>  </a>
+                            
+                        </div> 
+                    </div>
+                </div>
+
+            </div>
+        
+        
+
+            <!-- <ul class="list-group list-group-light">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <a t-attf-href="/my/insurance/policies">
+                        Mes polices d'assurance
+                    </a>
+                    <span class="badge badge-primary text-bg-secondary rounded-pill"> <t t-out="insurance_policy_count"/> </span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <a t-attf-href="/my/insurance/claims">
+                        Mes réclamations
+                    </a>
+                    <span class="badge badge-primary text-bg-secondary rounded-pill"><t t-out="insurance_claims_count"/></span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <a t-attf-href="/my/insurance/demands">
+                        Mes demandes d'assurance
+                    </a>
+                    <span class="badge badge-primary text-bg-secondary rounded-pill"><t t-out="insurance_demand_count"/></span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <a t-attf-href="/my/insurance/payments">
+                        Mes versement en prime d'assurance
+                    </a>
+                    <span class="badge badge-primary text-bg-secondary rounded-pill"><t t-out="insurance_payments_count"/></span>
+                </li>
+            </ul> -->
+        </t>
+    </template>
+
+    <!-- Liste des polices d'assurance d'une personne -->
+    <template id="portal_list_policies">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Policies</t>
+            </t>
+            <t t-if="policies">
+                <t t-call="portal.portal_table" class="table table-bordered">
+                    <thead>
+                        <tr class="active">
+                            <th class="text-center">ID</th>
+                            <th class="text-center">Nom de la police</th>
+                            <th class="text-center">Temps d'émission de la police</th>
+                            <th class="text-center">Produit d'assurance</th>
+                            <th class="text-center">Prime d'assurance</th>
+                            <th class="text-center">Montant garantie</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <t t-foreach="policies" t-as="policy">
+                                <tr>
+                                    <td class="text-center">
+                                        <a t-attf-href="/my/insurance/policies/#{policy.id}">
+                                            <t t-out="policy.id"/>
+                                        </a>
+                                    </td>
+                                    <td class="text-center">
+                                        <a t-attf-href="/my/insurance/policies/#{policy.id}">
+                                            <t t-out="policy.name"/>
+                                        </a>
+                                    </td>
+                                    <td class="text-center">
+                                        <t t-out="policy.duration"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <t t-out="policy.product_name"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <t t-out="policy.product_prime_price"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <t t-out="policy.product_amount_guarantee"/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </tr>
+                    </tbody>
+                </t >
+            </t>
+            
+            <t t-else="None">
+                <p class="text-center my-2">Aucune police d'assurance</p>
+            </t>
+            
+        </t>
+    </template>
+
+    <!-- Affichage  d'une police d'assurance -->
+    
+    <template id="portal_policy_form_view"  inherit_id="portal.portal_sidebar">
+        <xpath expr="//div[hasclass('o_portal_sidebar')]" position="inside">
+            <t t-if="page_name == 'portal_policies_form_view'">
+                <section style="background-color: #eee;">
+                    <div class="container py-5">
+                        
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="card mb-4">
+                                    <div class="card-body text-center">
+                                        <img src="/insurance_security/static/images/Insurance-pana.png" alt="avatar"
+                                        class="rounded-circle img-fluid" style="width: 2000px;"/>
+                                        <h5 class="my-3"><t t-out="policy.name"/></h5>
+                                        <!-- <div class="d-flex justify-content-center mb-2">
+                                            <button type="button" class="btn btn-primary">Follow</button>
+                                            <button type="button" class="btn btn-outline-primary ms-1">Message</button>
+                                        </div> -->
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            <div class="col-lg-8">
+                                <div class="card mb-4">
+                                    <div class="card-body">
+                                        <h3 class="card-title my-2 text-primary text-center font-italic me-1 ">Détails de la police d'assurance</h3>           
+                                        <hr/>
+                                        <div class="row">
+                                            <div class="col-sm-4">
+                                                <h5 class="mb-0">Nom du produit d'assurance</h5>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <p class="mb-0"><t t-out="policy.product_name"/></p>
+                                            </div>
+                                        </div>
+                                        <hr/>
+                                        <div class="row">
+                                            <div class="col-sm-4">
+                                                <h5 class="mb-0">Agent d'assurance</h5>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <p class="mb-0"><t t-out="policy.agent_name"/></p>
+                                            </div>
+                                        </div>
+                                        <hr/>
+                                        <div class="row">
+                                            <div class="col-sm-4">
+                                                <h5 class="mb-0">Numéro de téléphone de l'agent</h5>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <p class="mb-0"><t t-out="policy.agent_phone"/></p>
+                                            </div>
+                                        </div>
+                                        <hr/>
+                                        <div class="row">
+                                            <div class="col-sm-4">
+                                                <h5 class="mb-0">Temps d'emission de la police</h5>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <p class="mb-0"><t t-out="policy.duration"/> mois</p>
+                                            </div>
+                                        </div>
+                                        <hr/>
+                                        <div class="row">
+                                            <div class="col-sm-4">
+                                                <h5 class="mb-0">Date de début</h5>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <p class="mb-0"><t t-out="policy.start_date"/></p>
+                                            </div>
+                                        </div>
+                                        <hr/>
+                                        <div class="row">
+                                            <div class="col-sm-4">
+                                                <h5 class="mb-0">Date de fin</h5>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <p class="mb-0"><t t-out="policy.end_date"/></p>
+                                            </div>
+                                        </div>
+                                        <hr/>
+                                        <div class="row">
+                                            <div class="col-sm-4">
+                                                <h5 class="mb-0">Prime d'assurance</h5>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <p class="mb-0"><t t-out="policy.product_prime_price"/> <t t-out="policy.currency_id.symbol"/></p>
+                                            </div>
+                                        </div>
+                                        <hr/>
+                                        <div class="row">
+                                            <div class="col-sm-4">
+                                                <h5 class="mb-0">Montant de garantie</h5>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <p class="mb-0"><t t-out="policy.product_amount_guarantee"/> <t t-out="policy.currency_id.symbol"/></p>
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card mb-4">
+                                    <div class="card-body">
+                                        <h3 class="card-title my-2 text-primary text-center font-italic me-1 ">Conditions et obligations </h3>           
+                                        <hr/>
+                                        <div class="row">
+                                            <p class="m-2 me-1"><t t-out="policy.conditions"/></p>
+                                        </div>    
+                                    </div>
+                                </div>
+                                <!-- <div class="card mb-4">
+                                    <div class="card-body">
+                        
+                                        <div class="col-md-6">
+                                            <h3 class="mb-4 text-primary font-italic me-1">Règlements de l'agence</h3>
+                                            
+                                            <t t-if="policy.proofs">
+                                                <ul class="list-group list-group-light">
+                                                    <t t-foreach="policy.proofs" t-as="document">
+                                                        <li class="list-group-item">
+                                                            <a t-att-href="'/web/content/' + str(document.id) + '?download=true'"><t t-out="document.name"/></a>
+                                                        </li>
+                                                    </t>
+                                                </ul>
+                                            </t>  
+                                        </div>
+                                    </div>
+                                </div> -->
+                                
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+                    <!-- <div class="container py-5">
+                        
+                        <h1>Chatter feature</h1>
+
+                        <t t-call="portal.message_thread">
+                            <t t-set="object" t-value="policy.client_id" />
+                        </t>
+                        
+                    </div> -->
+                </section>
+            </t>
+        </xpath>
+    </template>
+
+    <!--  Liste des demandes d'assitance en assurance d'une personne -->
+    <template id="portal_list_assistances">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Assistances</t>
+            </t>
+            <t t-if="request.params.get('message')">
+                <div class="alert alert-success" role="alert" >
+                     <t t-esc="request.params.get('message')"/>
+                </div>
+            </t>
+            <div class="d-flex my-2 justify-content-end">
+                <a t-attf-href="/my/insurance/assistances/new" class="btn btn-primary btn-rounded">
+                    Demande d'assistance
+                </a>
+            </div>
+            
+            <t t-if="assistances">
+                <t t-call="portal.portal_table">
+                    <thead>
+                        <tr class="active">
+                            <th class="text-center">ID</th>
+                            <th class="text-center">Intitulé de la demande </th>
+                            <th class="text-center">Status</th>
+                            <th class="text-center">Date de demande</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <t t-foreach="assistances" t-as="assistance">
+                                <tr>
+                                    <td class="text-center">
+                                        <a t-attf-href="/my/insurance/assistances/#{assistance.id}">
+                                            <t t-out="assistance.id"/>
+                                        </a>
+                                    </td>
+                                    <td class="text-center">
+                                        <a t-attf-href="/my/insurance/assistances/#{assistance.id}">
+                                            <t t-out="assistance.name"/>
+                                        </a>
+                                    </td>
+                                    
+                                    <td class="text-center font-bold">
+                                        <t t-if="assistance.state == 'progress'">
+                                            <span class="badge text-bg-warning">En cours de traitement</span>
+                                        </t>
+                                        <t t-if="assistance.state == 'received'">
+                                            <span class="badge text-bg-danger">Reçue</span>
+                                        </t>
+                                        
+                                    </td>
+                                    <td class="text-center">
+                                        <t t-out="assistance.creation_date"/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </tr>
+                    </tbody>
+                </t >
+            </t>
+            <t t-else="None">
+                <p class="text-center my-2">Aucune demande d'assistance en cours</p>
+                
+            </t>
+            
+        </t>
+    </template>
+
+    <!-- Affichage  d'une demande d'assistance d'assurance -->
+    <template id="portal_assistance_form_view"  inherit_id="portal.portal_sidebar">
+        <xpath expr="//div[hasclass('o_portal_sidebar')]" position="inside">
+            <t t-if="page_name == 'portal_assistances_form_view'">
+                <section style="background-color: #eee;">
+                    <div class="container py-5">
+                        
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="card mb-4">
+                                    <div class="card-body text-center">
+                                        <img src="/insurance_security/static/images/Active Support-rafiki.png" alt="avatar"
+                                        class="rounded-circle img-fluid" style="width: 2000px;"/>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            <div class="col-lg-8">
+                                <div class="card mb-4">
+                                    <div class="card-body">
+                                        <h3 class="card-title my-2 text-primary text-center font-italic me-1 ">Détails sur la demande d'assistance</h3>           
+                                        <hr/>
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <p class="mb-0">Intitulé de la demande</p>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <p class="mb-0"><t t-out="assistance.name"/></p>
+                                            </div>
+                                        </div>
+                                        <hr/>
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <p class="mb-0">Date de la demande</p>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <p class="mb-0"><t t-out="assistance.creation_date"/></p>
+                                            </div>
+                                        </div>
+                                        <hr/>
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <p class="mb-0">Statut de la demande</p>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <t t-if="assistance.state == 'progress'">
+                                                    <span class="badge text-bg-warning">En cours de traitement</span>
+                                                </t>
+                                                <t t-if="assistance.state == 'received'">
+                                                    <span class="badge text-bg-danger">Reçue</span>
+                                                </t>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                                <div class="card mb-4">
+                                    <div class="card-body">
+                                        <h3 class="card-title my-2 text-primary text-center font-italic me-1">Description de la demande</h3>
+                                        <hr/>
+                                        <div class="row">
+                                            <p class="m-2 me-1"><t t-out="assistance.description"/></p>
+                                        </div> 
+                                                               
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+                </section>
+            </t>
+        </xpath>
+    </template>
+
+    <!--  Liste des demandes en assurance d'une personne -->
+    <template id="portal_list_demands">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Demands</t>
+            </t>
+            <t t-if="request.params.get('message')">
+                <div class="alert alert-success" role="alert" >
+                     <t t-esc="request.params.get('message')"/>
+                </div>
+            </t>
+            <div class="d-flex my-2 justify-content-end">
+                <a t-attf-href="/my/insurance/demands/new/demand/products" class="btn btn-primary btn-rounded">
+                    Effectuer une demande d'assurance
+                </a>
+            </div>
+            <t t-if="demands">
+                <t t-call="portal.portal_table">
+                    <thead>
+                        <tr class="active">
+                            <th class="text-center">ID</th>
+                            <th class="text-center">Titre de la demande</th>
+                            <th class="text-center">Date de la demande</th>
+                            <th class="text-center">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <t t-foreach="demands" t-as="demand">
+                                <tr>
+                                    <td class="text-center">
+                                        <a t-attf-href="/my/insurance/demands/#{demand.id}">
+                                            <t t-out="demand.id"/>
+                                        </a>
+                                    </td>
+                                    <td class="text-center">
+                                        <a t-attf-href="/my/insurance/demands/#{demand.id}">
+                                            <t t-out="demand.name"/>
+                                        </a>
+                                    </td>
+                                    <td class="text-center">
+                                        <t t-out="demand.date_demand"/>
+                                    </td>
+                                    <td class="text-center font-bold">
+                                        <t t-if="demand.state == 'accepted'">
+                                            <span class="badge text-bg-success">Accepté</span>
+                                        </t>
+                                        <t t-if="demand.state == 'refused'">
+                                            <span class="badge text-bg-danger">Refusé</span>
+                                        </t>
+                                        <t t-if="demand.state == 'progress'">
+                                            <span class="badge text-bg-info">En cours de traitement</span>
+                                        </t>
+                                        
+                                    </td>
+                                    
+                                </tr>
+                            </t>
+                        </tr>
+                    </tbody>
+                </t >
+            </t>
+            
+            <t t-else="None">
+                <p class="text-center my-2">Aucune demande de police d'assurance n'a été effectuée</p>
+            </t>
+            
+        </t>
+    </template>
+
+    <!-- Affichage  d'une demande d'assurance -->
+    
+    <template id="portal_demand_form_view"  inherit_id="portal.portal_sidebar">
+        <xpath expr="//div[hasclass('o_portal_sidebar')]" position="inside">
+            <t t-if="page_name == 'portal_demands_form_view'">
+                <section style="background-color: #eee;">
+                    <div class="container py-5">
+                        
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="card mb-4">
+                                    <div class="card-body text-center">
+                                        <img src="/insurance_security/static/images/Insurance-cuate.png" alt="avatar"
+                                        class="rounded-circle img-fluid" style="width: 2000px;"/>
+                                        <h5 class="my-3"><t t-out="demand.name"/></h5>
+                                        
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            <div class="col-lg-8">
+                                <div class="card mb-4">
+                                    <div class="card-body">
+                                        <h3 class="card-title my-2 text-primary text-center font-italic me-1 ">Détails sur la demande</h3>           
+                                        <hr/>
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <p class="mb-0">Date de la demande</p>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <p class="mb-0"><t t-out="demand.date_demand"/></p>
+                                            </div>
+                                        </div>
+                                        <hr/>
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <p class="mb-0">Produit d'assurance</p>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <p class="mb-0"><t t-out="demand.product_id.name"/></p>
+                                            </div>
+                                        </div>
+                                        <hr/>
+                                        
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <p class="mb-0">Statut de la demande</p>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <t t-if="demand.state == 'accepted'">
+                                                    <span class="badge text-bg-success">Accepté</span>
+                                                </t>
+                                                <t t-if="demand.state == 'refused'">
+                                                    <span class="badge text-bg-danger">Refusé</span>
+                                                </t>
+                                                <t t-if="demand.state == 'progress'">
+                                                    <span class="badge text-bg-info">En cours de traitement</span>
+                                                </t>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                                <div class="card mb-4">
+                                    <div class="card-body">
+                                        <h3 class="card-title my-2 text-primary text-center font-italic me-1">Description de la demande</h3>
+                                        <hr/>
+                                        <div class="row">
+                                            <p class="m-2 me-1"><t t-out="demand.description"/></p>
+                                        </div> 
+                                                               
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+                </section>
+            </t>
+        </xpath>
+    </template>
+
+    <!-- Liste des réclamations d'assurance d'une personne -->
+    <template id="portal_list_claims">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Claims</t>
+            </t>
+            <t t-if="request.params.get('message')">
+                <div class="alert alert-success" role="alert" >
+                     <t t-esc="request.params.get('message')"/>
+                </div>
+            </t>
+            <div class="d-flex my-2 justify-content-end">
+                <a t-attf-href="/my/insurance/claims/new/claim" class="btn btn-primary btn-rounded">
+                    Faire une réclamation
+                </a>
+            </div>
+            <t t-if="claims">
+                <t t-call="portal.portal_table">
+                    <thead>
+                        <tr class="active">
+                            <th class="text-center">ID</th>
+                            <th class="text-center">Numéro de réclamation</th>
+                            <th class="text-center">Montant de réclamation</th>
+                            <th class="text-center">Date de réclamation</th>
+                            <th class="text-center">Police d'assurance associé</th>
+                            <th class="text-center">Etat</th>
+                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <t t-foreach="claims" t-as="claim">
+                                <tr>
+                                    <td class="text-center">
+                                        <a t-attf-href="/my/insurance/claims/#{claim.id}">
+                                            <t t-out="claim.id"/>
+                                        </a>
+                                    </td>
+                                    <td class="text-center">
+                                        <a t-attf-href="/my/insurance/claims/#{claim.id}">
+                                            <t t-out="claim.name"/>
+                                        </a>
+                                    </td>
+                                    <td class="text-center">
+                                        <t t-out="claim.amount"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <t t-out="claim.date_claims"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <t t-out="claim.policy_product_name"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <t t-if="claim.state == 'progress'">
+                                            <span class="badge text-bg-warning">En cours de traitement</span>
+                                        </t>
+                                        <t t-if="claim.state == 'validated'">
+                                            <span class="badge text-bg-success">Acceptée</span>
+                                        </t>
+                                        <t t-if="claim.state == 'refused'">
+                                            <span class="badge text-bg-danger">Refusée</span>
+                                        </t>
+                                        <t t-if="claim.state == 'sold'">
+                                            <span class="badge text-bg-info">Soldée</span>
+                                        </t>
+                                        
+                                    </td>
+                                </tr>
+                            </t>
+                        </tr>
+                    </tbody>
+                </t >
+            </t>
+            <t t-else="None">
+                <p class="text-center my-2">Aucune réclamation de police d'assurance</p>
+            </t>
+            
+        </t>
+    </template>
+
+    <!-- Affichage  d'une réclamation d'assurance -->
+    <template id="portal_claim_form_view"  inherit_id="portal.portal_sidebar">
+        <xpath expr="//div[hasclass('o_portal_sidebar')]" position="inside">
+            <t t-if="page_name == 'portal_claims_form_view'">
+                <section style="background-color: #eee;">
+                    <div class="container py-5">
+                        
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="card mb-4">
+                                    <div class="card-body text-center">
+                                        <img src="/insurance_security/static/images/Insurance-amico.png" alt="avatar"
+                                        class="rounded-circle img-fluid" style="width: 2000px;"/>
+                                        <h5 class="my-3"><t t-out="claim.name"/></h5>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            <div class="col-lg-8">
+                                <div class="card mb-4">
+                                    <div class="card-body">
+                                        <h3 class="card-title my-2 text-primary text-center font-italic me-1 ">Détails sur la réclamation</h3>           
+                                        <hr/>
+                                        <div class="row">
+                                            <div class="col-sm-4">
+                                                <p class="mb-0">Montant de réclamation</p>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <p class="mb-0"><t t-out="claim.amount"/> <t t-out="claim.currency_id.symbol"/></p>
+                                            </div>
+                                        </div>
+                                        <hr/>
+                                        <div class="row">
+                                            <div class="col-sm-4">
+                                                <p class="mb-0">Date de réclamation</p>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <p class="mb-0"><t t-out="claim.date_claims"/></p>
+                                            </div>
+                                        </div>
+                                        <hr/>
+                                        <div class="row">
+                                            <div class="col-sm-4">
+                                                <p class="mb-0">Police d'assurance associé</p>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <p class="mb-0"><t t-out="claim.policy_id.name"/></p>
+                                            </div>
+                                        </div>
+                                        <hr/>
+                                        <div class="row">
+                                            <div class="col-sm-4">
+                                                <p class="mb-0">Etat de réclamation</p>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <t t-if="claim.state == 'progress'">
+                                                    <span class="badge text-bg-warning">En cours de traitement</span>
+                                                </t>
+                                                <t t-if="claim.state == 'validated'">
+                                                    <span class="badge text-bg-success">Acceptée</span>
+                                                </t>
+                                                <t t-if="claim.state == 'refused'">
+                                                    <span class="badge text-bg-danger">Refusée</span>
+                                                </t>
+                                                <t t-if="claim.state == 'sold'">
+                                                    <span class="badge text-bg-info">Soldée</span>
+                                                </t>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card mb-4">
+                                    <div class="card-body">
+                                        <h3 class="card-title my-2 text-primary text-center font-italic me-1 "> Description de la réclamation </h3>           
+                                        <hr/>
+                                        <div class="row">
+                                            <p class="m-2 me-1"><t t-out="claim.description"/></p>
+                                        </div>      
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+                </section>
+            </t>
+        </xpath>
+    </template>
+
+    <!--Liste des produits pour la demande d'assurance -->
+    <template id="portal_list_products">
+        <t t-call="portal.portal_layout">
+            <div class="row my-4">
+                <t t-if="products">
+                    <t t-foreach="products" t-as="product">
+                        <div class="col-sm-4">
+                                <div class="card rounded-top text-center">
+                                    <div class="card-body ">
+                                        <t t-if="product.image">
+                                            <img t-attf-src="data:image/*;base64,{{product.image}}" t-att-alt="product.name " style="max-width: 100%; max-height: 100vh; margin: auto;" class="rounded-4 fit"  />
+                                        </t> 
+                                        <t t-else="">
+                                            <img src="/insurance_security/static/images/Insurance-cuate.png" style="max-width: 100%; max-height: 100vh; margin: auto;" class="rounded-4 fit"  />
+                                        </t> 
+                                        <h5 class="card-title my-2 "><t t-out="product.name"/> </h5> 
+                                        <hr/>
+                                        <p class="card-text"> <span class="fw-bold">Prime d'assurance :</span> <t t-out="product.prime_price"/><span> <t t-out="product.currency_id.symbol"/></span></p>
+                                        <p class="card-text"> <span class="fw-bold">Montant garantie :</span> <t t-out="product.amount_guarantee"/><span> <t t-out="product.currency_id.symbol"/></span></p> 
+                                        <p class="card-text"> <span class="fw-bold">Type de couverture :</span> <t t-out="product.coverage_type"/></p>         
+                                        <a t-attf-href="/my/insurance/new/demand/products/#{product.id}" class="btn btn-primary">Description </a>
+                                        
+                                    </div> 
+                                </div>
+                        </div>
+                    </t>
+                </t>
+                
+                <t t-else="None">
+                    <p class="text-center my-2">Aucune produits d'assurance n'a été proposée</p>
+                
+                </t>
+                
+            </div>
+        </t>
+    </template>
+
+    <!-- Affichage d'un produit d'assurance  -->
+    <template id="portal_product_description_view"  inherit_id="portal.portal_sidebar">
+        <xpath expr="//div[hasclass('o_portal_sidebar')]" position="inside">
+            <t t-if="page_name == 'portal_product_description_view'">
+                <!-- content -->
+                <section class="py-5">
+                    <div class="container">
+                        <div class="row gx-5">
+                            <div class="d-flex justify-content-end">
+                                <a t-attf-href="/my/insurance/demands/new/demandproduct/#{product.id}" class="btn btn-primary btn-rounded">
+                                    Faire une demande
+                                </a>
+                            </div>  
+                            <aside class="col-lg-6">
+                                <div class="border rounded-4 mb-3 d-flex justify-content-center">
+                                    <t t-if="product.image">
+                                        <img t-attf-src="data:image/*;base64,{{product.image}}" t-att-alt="product.name " style="max-width: 100%; max-height: 100vh; margin: auto;" class="rounded-4 fit"  />
+                                    </t> 
+                                    <t t-else="">
+                                        <img src="/insurance_security/static/images/Insurance-cuate.png" style="max-width: 100%; max-height: 100vh; margin: auto;" class="rounded-4 fit"  />
+                                    </t>   
+                                    <!-- <img  class="rounded-4 fit" src="https://mdbcdn.b-cdn.net/img/bootstrap-ecommerce/items/detail1/big.webp" /> -->
+                                    
+                                </div>
+                                <!-- thumbs-wrap.// -->
+                                <!-- gallery-wrap .end// -->
+                            </aside>
+                            <main class="col-lg-6">
+                                <div class="ps-lg-3">
+                                    <h4 class="title text-dark">
+                                        <t t-out="product.name"/>
+                                    </h4>
+                                    <hr/>
+                                <div class="row mt-2">
+                                    <div class="row my-2">
+                                        <dt class="col-5">Type d'assurance :</dt>
+                                        <dd class="col-7">
+                                            <t t-foreach="product.type_ids" t-as="type">
+                                                <span class="badge text-bg-info"><t t-out="type.name"/> </span>
+                                            </t>
+                                            
+                                        </dd>
+                                    </div>
+                                    <div class="row my-1">
+                                        <dt class="col-5">Type de couverture :</dt>
+                                        <dd class="col-7">
+                                            <p><t t-out="product.coverage_type"/></p>
+                                        </dd>
+                                    </div>
+                                    <div class="row my-1">
+                                        <dt class="col-5">Prime d'assurance :</dt>
+                                        <dd class="col-7">
+                                            <p><t t-out="product.prime_price"/><span> <t t-out="product.currency_id.symbol"/></span></p>
+                                        </dd>
+                                    </div>
+                                    <div class="row my-1">
+                                        <dt class="col-5">Montant garantie :</dt>
+                                        <dd class="col-7">
+                                            <p><t t-out="product.amount_guarantee"/><span> <t t-out="product.currency_id.symbol"/></span></p>
+                                        </dd>
+                                    </div>
+                                </div>
+                                </div>
+                            </main>
+                        </div>
+                    </div>
+                </section>
+                <!-- content -->
+                <section class="bg-light border-top py-4">
+                    <div class="container">
+                        <div class="row gx-4">
+                        <div class="mb-4">
+                            <!-- Tabs -->
+                            <ul class="nav nav-pills nav-justified mb-3 px-2" id="myTab" role="tablist">
+                                <li class="nav-item d-flex" role="presentation">
+                                    <button class="nav-link active" id="advantages-tab" data-bs-toggle="tab" data-bs-target="#advantages" type="button" role="tab" aria-controls="advantages" aria-selected="true">Avantages et exclusions</button>
+                                </li>
+                                <li class="nav-item d-flex" role="presentation">
+                                    <button class="nav-link" id="conditions-tab" data-bs-toggle="tab" data-bs-target="#conditions" type="button" role="tab" aria-controls="conditions" aria-selected="false">Conditions et modalités</button>
+                                </li>
+                                <li class="nav-item d-flex" role="presentation">
+                                    <button class="nav-link" id="options-tab" data-bs-toggle="tab" data-bs-target="#options" type="button" role="tab" aria-controls="options" aria-selected="false">Options de personnalisation</button>
+                                </li>
+                            </ul>
+
+                            <!-- Tab panes -->
+                            <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane fade show active p-3" id="advantages" role="tabpanel" aria-labelledby="home-tab">
+                                <t t-out="product.advantages"/>
+                            </div>
+                            <div class="tab-pane fade p-3" id="conditions" role="tabpanel" aria-labelledby="profile-tab">
+                                <t t-out="product.conditions"/>
+                            </div>
+                            <div class="tab-pane fade p-3" id="options" role="tabpanel" aria-labelledby="profile-tab">
+                                <t t-out="product.options"/>
+                            </div>
+                            </div>
+                            <!-- Tabs -->
+                        </div>
+                        </div>
+                    </div>
+                </section>
+            </t>
+        </xpath>
+    </template>
+
+    <!-- Formulaire de demande d'assistance -->
+    <template id="portal_new_demand_assistance">
+        <t t-call="portal.portal_layout">
+            <section class="p-3 p-md-4 p-xl-5">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <t t-foreach="error_list" t-as="error">
+                            <div class="alert alert-danger" role="alert">
+                                <t t-out="error"/>
+                            </div>
+                        </t>
+                    
+                        <div class="alert alert-success" role="alert" t-if="success_msg">
+                            <t t-out="success_msg"/>
+                        </div>
+                        <div class="col-12 col-md-9 col-lg-7 col-xl-6 col-xxl-5">
+                            <div class="card border border-light-subtle rounded-10">
+                                <div class="card-body p-3 p-md-4 p-xl-5">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="mb-5">
+                                                <h4 class="text-center">Formulaire de demande de service d'assistance</h4>
+                                                <hr/>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                    <form method="post" enctype="multipart/form-data">
+                                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                        <div class="row gy-3 overflow-hidden">
+                                            <div class="col-12">
+                                                <div class="mb-3">
+                                                    <label class="col-form-label" for="name">Intitulé de la demande</label>
+                                                    <input type="char" name="name" id="name" class="form-control"/>
+                                                    <small id="nameHelp" class="form-text text-muted"> Titre de la demande</small>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="mb-3">
+                                                    <label class="col-form-label" for="email">Email</label>
+                                                    <input type="email" name="email" id="email" class="form-control" />
+                                                    <small id="nameHelp" class="form-text text-muted"> Email</small>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="mb-3">
+                                                    <label class="col-form-label" for="description">Motivation de la demande</label>
+                                                    <textarea class="form-control" name="description" id="description" rows="4" placeholder="Détails"></textarea>
+                                                    <small id="descriptionHelp" class="form-text text-muted">Préciser les raisons de votre demande d'assistance</small>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="col-12">
+                                                <div class="d-grid">
+                                                    <button class="btn bsb-btn-xl  btn-primary" type="submit"> Effectuer la demande</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>  
+            <!-- <t t-call="portal.portal_table">
+                <t t-foreach="error_list" t-as="error">
+                    <div class="alert alert-danger" role="alert">
+                        <t t-out="error"/>
+                    </div>
+                </t>
+              
+                <div class="alert alert-success" role="alert" t-if="success_msg">
+                    <t t-out="success_msg"/>
+                </div>
+                           
+                <form method="post" enctype="multipart/form-data" >
+                    <div class="form-group row mt-2">
+                        <label class="col-sm-2 col-form-label" for="name">Intitulé de la demande</label>
+                        <div class="col-sm-10">
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                            <input type="char" name="name" id="name" class="form-control" placeholder="Intitulé de la demande"/>
+                            <small id="nameHelp" class="form-text text-muted">Titre de la demande</small>
+                        </div>
+                    </div>
+
+                    <div class="form-group row mt-2">
+                        <label class="col-sm-2 col-form-label" for="product">Produit d'assurance</label>
+                        <div class="col-sm-10">
+                            <select name="product" id="product" class="form-control">
+                                <option value="">Select product</option>
+                                <t t-foreach="products" t-as="product">
+                                    <option t-att-value="product.id">
+                                        <t t-out="product.name"/>
+                                    </option>
+                                </t>
+                            </select>
+                            <small id="productHelp" class="form-text text-muted">Liste des produits d'assurance disponible. Choississez-en 1</small>
+                        </div>
+                    </div>
+
+                    <div class="form-group row mt-2">
+                        <label class="col-sm-2 col-form-label" for="name">Documents pour preuve</label>
+                        <div class="col-sm-10">
+                            <input type="file" name="proofs" id="proofs" multiple="true" class="file"/>
+                            <small id="proofsHelp" class="form-text text-muted"> <br/> Insérer les document adéquates stipuler pour appuyer votre demande</small>
+                        </div>
+                    </div>
+
+                    <div class="form-group row mt-2">
+                        <label class="col-sm-2 col-form-label" for="description">Détails sur la demande</label>
+                        <div class="col-sm-10">
+                            <textarea class="form-control" name="description" id="description" rows="4"></textarea>
+                            <small id="descriptionHelp" class="form-text text-muted">Détails de votre demande d'assurance. Préciser les raisons de votre demande</small>
+                        </div>
+                    </div>
+
+                    <div class="form-group row mt-2">
+                        
+                        <div class="col-sm-10">
+                            <button class="btn btn-primary" type="submit"> Ajouter une demande</button>
+                        </div>
+                    </div>
+                </form>
+                    
+            </t> -->
+        </t>
+       
+    </template>
+
+    <!-- Formulaire de demande d'assurance -->
+    <template id="portal_new_demand_insurance">
+        <t t-call="portal.portal_layout">
+            <section class="p-3 p-md-4 p-xl-5">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <t t-foreach="error_list" t-as="error">
+                            <div class="alert alert-danger" role="alert">
+                                <t t-out="error"/>
+                            </div>
+                        </t>
+                    
+                        <div class="alert alert-success" role="alert" t-if="success_msg">
+                            <t t-out="success_msg"/>
+                        </div>
+                        <div class="col-12 col-md-9 col-lg-7 col-xl-6 col-xxl-5">
+                            <div class="card border border-light-subtle rounded-10">
+                                <div class="card-body p-3 p-md-4 p-xl-5">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="mb-5">
+                                                <h4 class="text-center">Formulaire de demande d'une police d'assurance</h4>
+                                                <hr/>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                    <form method="post" enctype="multipart/form-data">
+                                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                        <div class="row gy-3 overflow-hidden">
+                                            <div class="col-12">
+                                                <div class="mb-3">
+                                                    <label class="col-form-label" for="name">Intitulé de la demande</label>
+                                                    <input type="char" name="name" id="name" class="form-control"/>
+                                                    <small id="nameHelp" class="form-text text-muted"> Titre de la demande</small>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="mb-3">
+                                                    <label class="col-form-label" for="description">Motivation de la demande</label>
+                                                    <textarea class="form-control" name="description" id="description" rows="4" placeholder="Détails"></textarea>
+                                                    <small id="descriptionHelp" class="form-text text-muted">Préciser les raisons de votre demande de police d'assurance</small>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="mb-3">
+                                                    <label class="col-form-label" for="name">Documents pour preuve</label>
+                                                    <input type="file" name="proofs" id="proofs" accept=".pdf" multiple="true" class="file form-control" />
+                                                    <small id="proofsHelp" class="form-text text-muted"> Insérer les document adéquates stipuler pour appuyer votre demande</small>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="d-grid">
+                                                    <button class="btn bsb-btn-xl  btn-primary" type="submit"> Effectuer la demande</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>  
+            <!-- <t t-call="portal.portal_table">
+                <t t-foreach="error_list" t-as="error">
+                    <div class="alert alert-danger" role="alert">
+                        <t t-out="error"/>
+                    </div>
+                </t>
+              
+                <div class="alert alert-success" role="alert" t-if="success_msg">
+                    <t t-out="success_msg"/>
+                </div>
+                           
+                <form method="post" enctype="multipart/form-data" >
+                    <div class="form-group row mt-2">
+                        <label class="col-sm-2 col-form-label" for="name">Intitulé de la demande</label>
+                        <div class="col-sm-10">
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                            <input type="char" name="name" id="name" class="form-control" placeholder="Intitulé de la demande"/>
+                            <small id="nameHelp" class="form-text text-muted">Titre de la demande</small>
+                        </div>
+                    </div>
+
+                    <div class="form-group row mt-2">
+                        <label class="col-sm-2 col-form-label" for="product">Produit d'assurance</label>
+                        <div class="col-sm-10">
+                            <select name="product" id="product" class="form-control">
+                                <option value="">Select product</option>
+                                <t t-foreach="products" t-as="product">
+                                    <option t-att-value="product.id">
+                                        <t t-out="product.name"/>
+                                    </option>
+                                </t>
+                            </select>
+                            <small id="productHelp" class="form-text text-muted">Liste des produits d'assurance disponible. Choississez-en 1</small>
+                        </div>
+                    </div>
+
+                    <div class="form-group row mt-2">
+                        <label class="col-sm-2 col-form-label" for="name">Documents pour preuve</label>
+                        <div class="col-sm-10">
+                            <input type="file" name="proofs" id="proofs" multiple="true" class="file"/>
+                            <small id="proofsHelp" class="form-text text-muted"> <br/> Insérer les document adéquates stipuler pour appuyer votre demande</small>
+                        </div>
+                    </div>
+
+                    <div class="form-group row mt-2">
+                        <label class="col-sm-2 col-form-label" for="description">Détails sur la demande</label>
+                        <div class="col-sm-10">
+                            <textarea class="form-control" name="description" id="description" rows="4"></textarea>
+                            <small id="descriptionHelp" class="form-text text-muted">Détails de votre demande d'assurance. Préciser les raisons de votre demande</small>
+                        </div>
+                    </div>
+
+                    <div class="form-group row mt-2">
+                        
+                        <div class="col-sm-10">
+                            <button class="btn btn-primary" type="submit"> Ajouter une demande</button>
+                        </div>
+                    </div>
+                </form>
+                    
+            </t> -->
+        </t>
+       
+    </template>
+
+    <!-- Formulaire de réclamations d'une assurance -->
+    <template id="portal_new_claim_insurance">
+        <t t-call="portal.portal_layout">
+            <section class="p-3 p-md-4 p-xl-5">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-12 col-md-9 col-lg-7 col-xl-6 col-xxl-5">
+                            <div class="card border border-light-subtle rounded-10">
+                                <div class="card-body p-3 p-md-4 p-xl-5">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="mb-5">
+                                                <h4 class="text-center">Formulaire de réclamation d'assurance</h4>
+                                                <hr/>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                    <form method="post" enctype="multipart/form-data">
+                                                                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                        <div class="row gy-3 overflow-hidden">
+                                            <div class="col-12">
+                                                <div class="mb-3">
+                                                    <label class="col-form-label" for="name">Documents pour preuve</label>
+                                                    <input type="file" name="proofs" id="proofs" accept=".pdf" multiple="true" class="file form-control"/>
+                                                    <small id="proofsHelp" class="form-text text-muted"> Insérer les document adéquates stipuler pour appuyer votre réclamation</small>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="mb-3">
+                                                    <label class="col-form-label" for="description">Détails sur la réclamation d'assurance</label>
+                                                    <textarea class="form-control" name="description" id="description" rows="4" placeholder="Détails"></textarea>
+                                                    <small id="descriptionHelp" class="form-text text-muted">Détails de votre réclamation d'assurance. Préciser les raisons de votre réclamation en assurance</small>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class=" mb-3">
+                                                    <label class="col-form-label" for="product">Police d'assurance</label>
+                                                    <select name="policy" id="policy" class="form-control">
+                                                        <option value="">Select policy</option>
+                                                        <t t-foreach="policies" t-as="policy">
+                                                            <option t-att-value="policy.id">
+                                                                <t t-out="policy.name"/>
+                                                            </option>
+                                                        </t>
+                                                    </select> 
+                                                    <small id="policyHelp" class="form-text text-muted">Liste de vos polices d'assurance. Choississez-en 1</small>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="d-grid">
+                                                    <button class="btn bsb-btn-xl  btn-primary" type="submit"> Ajouter une réclamation</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>  
+            <!--<t t-call="portal.portal_table">
+                 <t t-foreach="error_list" t-as="error">
+                    <div class="alert alert-danger" role="alert">
+                        <t t-out="error"/>
+                    </div>
+                </t>
+              
+                <div class="alert alert-success" role="alert" t-if="success_msg">
+                    <t t-out="success_msg"/>
+                </div> -->
+                     
+                <!-- <form method="post" enctype="multipart/form-data" >
+                    <div class="form-group row mt-2">
+                        <label class="col-sm-2 col-form-label" for="product">Police d'assurance</label>
+                        <div class="col-sm-10">
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                            <select name="policy" id="policy" class="form-control">
+                                <option value="">Select policy</option>
+                                <t t-foreach="policies" t-as="policy">
+                                    <option t-att-value="policy.id">
+                                        <t t-out="policy.name"/>
+                                    </option>
+                                </t>
+                            </select>
+                            <small id="policyHelp" class="form-text text-muted">Liste de vos polices d'assurance. Choississez-en 1</small>
+                        </div>
+                    </div>
+
+                    <div class="form-group row mt-2">
+                        <label class="col-sm-2 col-form-label" for="name">Documents pour preuve</label>
+                        <div class="col-sm-10">
+                            <input type="file" name="proofs" id="proofs" multiple="true" class="file"/>
+                            <small id="proofsHelp" class="form-text text-muted"> <br/> Insérer les document adéquates stipuler pour appuyer votre réclamation</small>
+                        </div>
+                    </div>
+
+                    <div class="form-group row mt-2">
+                        <label class="col-sm-2 col-form-label" for="description">Détails sur la réclamation d'assurance</label>
+                        <div class="col-sm-10">
+                            <textarea class="form-control" name="description" id="description" rows="4"></textarea>
+                            <small id="descriptionHelp" class="form-text text-muted">Détails de votre réclamation d'assurance. Préciser les raisons de votre réclamation en assurance</small>
+                        </div>
+                    </div>
+
+                    <div class="form-group row mt-2">
+                        
+                        <div class="col-sm-10">
+                            <button class="btn btn-primary" type="submit"> Ajouter une réclamation</button>
+                        </div>
+                    </div>
+                </form> 
+                    
+            </t>-->
+        </t>
+       
+    </template>
+
+    <!-- Liste des payments des primes d'assurance  -->
+    <template id="portal_list_payments">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Payments</t>
+            </t>
+            <t t-if="payments">
+                <t t-call="portal.portal_table">
+                    <thead>
+                        <tr class="active">
+                            <th class="text-center">ID</th>
+                            <th class="text-center">Titre de versement</th>
+                            <th class="text-center">Montant de prime</th>
+                            <th class="text-center">Date de versement</th>
+                            <th class="text-center">Police d'assurance</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <t t-foreach="payments" t-as="payment">
+                                <tr>
+                                    <td class="text-center">
+                                        <a t-attf-href="/my/insurance/payments/#{payment.id}">
+                                            <t t-out="payment.id"/>
+                                        </a>
+                                    </td>
+                                    <td class="text-center">
+                                        <a t-attf-href="/my/insurance/payments/#{payment.id}">
+                                            <t t-out="payment.name"/>
+                                        </a>
+                                    </td>
+                                    <td class="text-center">
+                                        <t t-out="payment.amount"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <t t-out="payment.amount_date"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <t t-out="payment.policy_id.name"/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </tr>
+                    </tbody>
+                </t >
+            </t>
+            <t t-else="None">
+                <p class="text-center my-2">Aucun payements n'a été effectuée</p>  
+            </t>
+            
+        </t>
+    </template>
+
+    <!-- Affichage d'un payment de prime d'assurance  -->
+     <template id="portal_payment_form_view"  inherit_id="portal.portal_sidebar">
+        <xpath expr="//div[hasclass('o_portal_sidebar')]" position="inside">
+            <t t-if="page_name == 'portal_payments_form_view'">
+                <section style="background-color: #eee;">
+                    <div class="container py-5">
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="card mb-4">
+                                    <div class="card-body text-center">
+                                        <img src="/insurance_security/static/images/Money-income.png" alt="avatar"
+                                        class="rounded-circle img-fluid" style="width: 2000px;"/>
+                                        <h5 class="my-3"><t t-out="payment.name"/></h5>
+                                        
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            <div class="col-lg-8">
+                                <div class="card mb-4">
+                                    <div class="card-body">
+                                        <h3 class="card-title my-2 text-primary text-center font-italic me-1 ">Détails sur le versement</h3>           
+                                        <hr/>
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <p class="mb-0">Date de versement</p>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <p class="mb-0"><t t-out="payment.amount_date"/></p>
+                                            </div>
+                                        </div>
+                                        <hr/>
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <p class="mb-0">Police d'assurance</p>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <p class="mb-0"><t t-out="payment.policy_id.name"/></p>
+                                            </div>
+                                        </div>
+                                        <hr/>
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <p class="mb-0">Montant de prime</p>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <p class="mb-0"><t t-out="payment.amount"/> <t t-out="payment.currency_id.symbol"/></p>
+                                            </div>
+                                        </div>
+                                       
+                                        
+                                    </div>
+                                </div>
+                                                   
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+                </section>
+            </t>
+        </xpath>
+    </template>
+
+   
+</odoo>

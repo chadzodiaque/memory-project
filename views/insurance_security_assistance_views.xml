@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <record id="insurance_security_assistance_action" model="ir.actions.act_window">
+        <field name="name">Service d'assitance </field>
+        <field name="res_model">insurance.security.assistance</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+            Aucun service émis par un client
+            </p>
+        </field>
+    </record>
+
+    <record id="insurance_security_assistance_view_tree" model="ir.ui.view">
+        <field name="name">insurance.security.assistance.tree</field>
+        <field name="model">insurance.security.assistance</field>
+        <field name="arch" type="xml">
+            <tree string="Assistance Tree">
+                <field name="name"/>
+                <field name="email"/>
+                <field name="state"/>
+                <field name="creation_date"/>
+                
+            </tree>
+        </field>
+    </record>
+
+    <record id="insurance_security_assistance_view_form" model="ir.ui.view">
+        <field name="name">insurance.security.assistance.view.form</field>
+        <field name="model">insurance.security.assistance</field>
+        <field name="arch" type="xml">
+            <form string="Insurance security assistance">
+                <header>
+                    <button name="received_assistance" string="Reçue " type="object"
+                               states="progress" class="oe_highlight" groups="insurance_security.access_agents_insurance_security_group"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    
+                    <group>
+                        <group string="Date de création">
+                           <field name="creation_date"/>
+                        </group>
+                        
+                        <group string="Détails sur l'utilisateur">
+                            <field name="user_id"  options="{'no_create': True}"  />
+                            <field name="email"  widget="email"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="Description de l'assistance'" string="Description">
+                            <field name="description" />
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+</odoo>

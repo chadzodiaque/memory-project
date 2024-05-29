@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_partner_form" model="ir.ui.view">
+        <field name="name">res.partner.form.inherit.insurance.security</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <notebook position="inside">
+                <page name="insurance_security_policy" string="Mes polices d'assurances">
+                    <field name="policy_ids" readonly="1" />
+                </page>
+                <page name="insurance_security_claims" string="Mes réclamations d'assurances">
+                    <field name="claims_ids" />
+                </page>
+                <page name="insurance_security_demands" string="Mes demandes d'assurances">
+                    <field name="demands_ids"/>
+                </page>
+            </notebook>
+        </field>
+    </record>
+</odoo>

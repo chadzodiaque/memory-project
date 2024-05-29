@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <record id="insurance_security_policy_action" model="ir.actions.act_window">
+        <field name="name">Polices d'assurance</field>
+        <field name="res_model">insurance.security.policy</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+            Aucun police d'assurance 
+            </p>
+        </field>
+    </record>
+
+    <record id="insurance_security_policy_view_tree" model="ir.ui.view">
+        <field name="name">insurance.security.policy.tree</field>
+        <field name="model">insurance.security.policy</field>
+        <field name="arch" type="xml">
+            <tree string="Policies Tree">
+                <field name="name"/>
+                <field name="duration"/>
+                <field name="product_prime_price"/>
+                <field name="product_amount_guarantee"/>
+                <field name="product_name" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="insurance_security_policy_view_form" model="ir.ui.view">
+        <field name="name">insurance.security.policy.view.form</field>
+        <field name="model">insurance.security.policy</field>
+        <field name="arch" type="xml">
+            <form string="Insurance security policy">
+                <header>
+                    <button name="confirm_insurance" string="Confirmer " type="object"
+                               states="progress" class="oe_highlight"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" class="oe_view_only"/>
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    
+                    <group>
+                        <group string="Détails sur le client">
+                            <field name="client_id"  options="{'no_create': True}"  />
+                            <field name="client_name" />
+                            <field name="client_phone" />
+                            <field name="client_email" />
+                        </group>
+                        <group string="Détails sur la police ">
+                            <field name="product_id"  options="{'no_create': True}"  />
+                            <field name="product_name"/>
+                            <field name="product_type"/>
+                            <field name="commission" widget="percentage"/>
+                            <field name="duration"/>
+                            <field name="start_date" />
+                            <field name="end_date" />
+                            <field name="product_coverage_for"/>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="product_prime_price" widget="monetary"/>
+                            <field name="product_amount_guarantee" widget="monetary"/>
+                        </group>
+                        <group string="Détails sur l'agent">
+                            <field name="agent_id"  options="{'no_create': True}"  />
+                            <field name="agent_name" />
+                            <field name="agent_phone" />
+                            <field name="agent_email" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Conditions et Obligations">
+                            <field name="conditions" />
+                        </page>
+                        <page string="Règlements de l'agence et autre document">
+                            <field name="proofs" widget="many2many_binary"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+</odoo>

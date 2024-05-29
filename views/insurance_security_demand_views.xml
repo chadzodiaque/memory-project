@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <record id="insurance_security_demand_action" model="ir.actions.act_window">
+        <field name="name">Demande de police d'assurance </field>
+        <field name="res_model">insurance.security.demand</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+            Aucun demande de police d'assurance émis par un client
+            </p>
+        </field>
+    </record>
+
+    <record id="insurance_security_demand_view_tree" model="ir.ui.view">
+        <field name="name">insurance.security.demand.tree</field>
+        <field name="model">insurance.security.demand</field>
+        <field name="arch" type="xml">
+            <tree string="Demand Tree">
+                <field name="name"/>
+                <field name="date_demand"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="insurance_security_demand_view_form" model="ir.ui.view">
+        <field name="name">insurance.security.demand.view.form</field>
+        <field name="model">insurance.security.demand</field>
+        <field name="arch" type="xml">
+            <form string="Insurance security demand">
+                <header>
+                    <button name="validated_demand" string="Acceptée " type="object"
+                               states="progress" class="oe_highlight" groups="insurance_security.access_agents_insurance_security_group" />
+                    <button name="refused_demand" string="Refusée " type="object"
+                               states="progress" class="oe_highlight" groups="insurance_security.access_agents_insurance_security_group"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    
+                    <group>
+                        <group string="Date de création">
+                           <field name="date_demand"/>
+                        </group>
+                        
+                        <group string="Détails sur le client">
+                            <field name="client_id"  options="{'no_create': True}"  />
+                            <field name="client_name" />
+                            <field name="client_phone" />
+                            <field name="client_email" />
+                        </group>
+                        <group string="Détails sur le produit ">
+                            <field name="product_id"  options="{'no_create': True}"  />
+                            <field name="product_name"/>
+                            <field name="product_type"/>
+                            <field name="product_coverage_for"/>
+                        </group>
+                    </group>
+                    <group>
+                        
+                    </group>
+                    <notebook>
+                        <page name="Descirption de la demande" string="Description">
+                            <field name="description" />
+                        </page>
+                        <page name="Document d'appui" string="Document d'appui">
+                            <field name="proofs" widget="many2many_binary"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                
+            </form>
+        </field>
+    </record>
+
+</odoo>
