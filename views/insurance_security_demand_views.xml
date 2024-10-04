@@ -45,27 +45,15 @@
                         </h1>
                     </div>
                     
-                    <group>
-                        <group string="Date de création">
-                           <field name="date_demand"/>
-                        </group>
-                        
-                        <group string="Détails sur le client">
-                            <field name="client_id"  options="{'no_create': True}"  />
-                            <field name="client_name" />
-                            <field name="client_phone" />
-                            <field name="client_email" />
-                        </group>
-                        <group string="Détails sur le produit ">
-                            <field name="product_id"  options="{'no_create': True}"  />
-                            <field name="product_name"/>
-                            <field name="product_type"/>
-                            <field name="product_coverage_for"/>
-                        </group>
+                    <group string="Informations de la demande ">
+                        <field name="cars_number"/>
+                        <field name="client_id"  options="{'no_create': True}"  />
+                        <field name="client_name" />
+                        <field name="client_phone" />
+                        <field name="client_email" />
+                        <field name="date_demand"/>
                     </group>
-                    <group>
-                        
-                    </group>
+                    
                     <notebook>
                         <page name="Descirption de la demande" string="Description">
                             <field name="description" />
@@ -75,8 +63,29 @@
                         </page>
                     </notebook>
                 </sheet>
-                
             </form>
+        </field>
+    </record>
+
+    <record id="insurance_security_demand_email_template" model="mail.template">
+        <field name="name">EMAIL demand TEMPLATE NAME</field>
+        <field name="model">insurance.security.demand</field>
+        <field name="email_from">contact@gmail.com</field>
+        <field name="email_to">{{ object.client_email }}</field>
+        <field name="subject">Demande d'assurance acceptée {{ object.name }}</field>
+        <field name="body_html" type="html">
+            <div style="margin: 0px; padding: 0px;">
+                <div style="margin: 0px; padding: 0px;">
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        Dear {{ client.name }},<br/>
+                        <br/>
+                        Votre demande de police d'assurance a été validée <br/>
+                        <br/>
+                        Vous avez la possibilité de consulter votre police d'assurance dans votre espace client si vous le souhaitez.
+                        Regards,<br/>
+                    </p>
+                </div>
+            </div>
         </field>
     </record>
 

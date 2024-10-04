@@ -18,10 +18,11 @@
         <field name="arch" type="xml">
             <tree string="Payments Tree">
                 <field name="name"/>
-                <field name="amount"/>
-                <field name="amount_date"/>
-                <field name="policy_id"/>
-                <field name="client_id"/>
+                <field name="date"/>
+                <field name="policy_name"/>
+                <field name="agent_name"/>
+                <field name="policy_prime"/>
+                <field name="client_name"/>
             </tree>
         </field>
     </record>
@@ -41,29 +42,20 @@
                     </div>
                     <group>
                         <group string="Détails sur le paiement ">
-                            <field name="currency_id" />
-                            <field name="amount"  widget ="monetary" />
-                            <field name="amount_date" options=" {'no_create':True} " />
+                            <field name="policy_currency_id" />
+                            <field name="policy_prime"  widget ="monetary" />
+                            <field name="date" />
                         </group>
 
                         <group string="Détails sur la police d'assurance ">
                             <field name="policy_id" options=" {'no_create':True} " />
+                            <field name="agent_name" />
                             <field name="policy_name" />
-                            <field name="policy_start_date" />
-                            <field name="policy_end_date" />
-                            <field name="policy_product_name" />
                            
                         </group>
 
                         <group string="Détails sur le client">
-                            <field name="client_id" options="{'no_create':True} " />
                             <field name="client_name" />
-                            <field name="client_phone" />
-                            <field name="client_email" />
-                        </group>
-                        <group>
-                           
-                            
                         </group>
                     </group>
                     

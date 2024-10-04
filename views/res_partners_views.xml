@@ -6,14 +6,32 @@
         <field name="inherit_id" ref="base.view_partner_form"/>
         <field name="arch" type="xml">
             <notebook position="inside">
-                <page name="insurance_security_policy" string="Mes polices d'assurances">
-                    <field name="policy_ids" readonly="1" />
-                </page>
-                <page name="insurance_security_claims" string="Mes réclamations d'assurances">
-                    <field name="claims_ids" />
-                </page>
-                <page name="insurance_security_demands" string="Mes demandes d'assurances">
-                    <field name="demands_ids"/>
+                
+                <page string="Informations sur l'assurance Automobile">
+                    <form string="Insurance security policy">
+                        <sheet>
+                            <group>
+                                <group string="Informations sur l'assurance">
+                                    <field name="cars_number" />
+                                    <field name="proofs" widget="many2many_binary"/>
+                                </group>
+                            </group>
+                            <notebook>
+                                <page name="insurance_security_policy" string="Liste des polices d'assurances">
+                                    <field name="policy_ids" options="{'no_create': True}" />
+                                </page>
+                                <page string="Liste des déclaration de sinistres">
+                                    <field name="claims_ids" options="{'no_create': True}" />
+                                </page>
+                                <page string="Liste des demandes en assurance automobile">
+                                    <field name="demands_ids" options="{'no_create': True}" />
+                                </page>
+                                <page string="Preuve de la demande">
+                                    <field name="proofs" widget="many2many_binary"/>
+                                </page>
+                            </notebook>
+                        </sheet>
+                    </form>
                 </page>
             </notebook>
         </field>

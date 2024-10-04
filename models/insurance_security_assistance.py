@@ -1,12 +1,13 @@
-from odoo import fields, models
+from odoo import fields, models, api, _
+from ..utils.cryptofpe import Crypto
+from odoo.exceptions import ValidationError
 
 class InsuranceAssistance(models.Model):
 
     _name = "insurance.security.assistance"
     _description = "Traitement d'assistance"
 
-    name = fields.Char("Intitulé de l'assistance", required=True, copy=False, readonly=True)
-    email = fields.Char("Email", required=True, copy=False, readonly=True)
+    name = fields.Char("Intitulé de l'assistance", required=True, copy=False)
     description = fields.Html("Description", copy=False, required=True)
     state = fields.Selection(
         selection=[
@@ -18,9 +19,9 @@ class InsuranceAssistance(models.Model):
         copy=False,
         default="progress",
     )
-    creation_date = fields.Date("Date de creation", default=fields.Datetime.today(), required=True, copy=False, readonly=True)
-
-    user_id = fields.Many2one("res.partner", string="Utilisateur", copy=False, readonly=True)
+    user_id = fields.Many2one("res.partner", string="Utilisateur", copy=False, readonly=True, default = lambda self: self.env.user.partner_id)
 
     def received_assistance(self):
         self.state = 'received'
+    
+    

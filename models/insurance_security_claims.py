@@ -4,16 +4,19 @@ from odoo.tools import float_compare, float_is_zero
 
 class InsuranceClaims(models.Model):
     _name = "insurance.security.claims"
-    _description = "Réclamation d'une assurance"
+    _description = "Liste des sinistres des clients"
 
-    name = fields.Char(string='Numéro de réclamation', required=True, copy=False, readonly=True, index=True, default=lambda self: _('New'))
-    description = fields.Html("Descritption", copy=False,  help='Détails de réclamation')
+    name = fields.Char(string='Numéro de sinistre', required=True, copy=False, readonly=True, index=True, default=lambda self: _('New'))
+    description = fields.Html("Descritption d'un sinistre", copy=False,  help='Détails de sinistre', readonly=True)
     date_claims = fields.Date(
-        string='Date de réclamations', 
+        string='Date de sinistre', 
         required=True,
         readonly=True,
         default=fields.Datetime.today()
     )
+
+    currency_id = fields.Many2one("res.currency", string="Devise")
+    compensation= fields.Float("Montant de l'indemnisation ", copy=False, help=' Montant d\'argent que le client a reçu comme indemnisation lors d\'un sinistre. ')
 
     state = fields.Selection(
         selection=[
@@ -22,15 +25,15 @@ class InsuranceClaims(models.Model):
             ("refused", "Refusée"),
             ("sold", "Soldée")
         ],
-        string="Status",
+        string="Status de l'indemnisation",
         required=True,
         copy=False,
         default="progress",
     )
     proofs = fields.Many2many(
         'ir.attachment', 
-        string='Preuve de réclamation en appui', 
-        help='Veuillez insérer les preuves de votre incidence ainsi que tous les autres documents pour que votre réclamations soit validée',
+        string='Preuve de sinistre en appui', 
+        help='Veuillez insérer les preuves de l\'incident ainsi que tous les autres documents pour que votre sinistres soit validée',
         readonly=True
     )
 
@@ -44,9 +47,6 @@ class InsuranceClaims(models.Model):
     policy_name = fields.Char( related='policy_id.name', string="Nom du produit", required=True, copy=False, readonly=True)
     policy_start_date = fields.Date( related='policy_id.start_date', string="Type d'assurance", copy=False, readonly=True)
     policy_end_date = fields.Date( related='policy_id.end_date', string="Type de couvrement", copy=False, readonly=True)
-    policy_product_name = fields.Char(related='policy_id.product_name', string="Devise", copy=False, readonly=True)
-    currency_id = fields.Many2one(related='policy_id.currency_id', string="Devise", copy=False, readonly=True)
-    amount = fields.Float( related='policy_id.product_amount_guarantee', string="Montant garantie", copy=False, readonly=True)
 
     agent_name = fields.Char( related='policy_id.agent_name', string="Nom du l'agent", required=True, copy=False, readonly=True)
     agent_phone = fields.Char( related='policy_id.agent_phone', string="Numéro de téléphone", required=True, copy=False, readonly=True)
@@ -77,7 +77,7 @@ class InsuranceClaims(models.Model):
                             {
                                 "name": prop.name,
                                 "quantity": 1.0,
-                                "price_unit": prop.amount,
+                                "price_unit": prop.compensation,
                             },
                         ),
                     ],

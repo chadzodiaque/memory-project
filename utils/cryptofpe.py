@@ -42,6 +42,7 @@ class Crypto:
         """Chiffre les données avec FPE."""
         try:
             # Chiffrement des données
+
             data_bytes = data.encode('utf-8')
             crypted_data = self.fpe.encrypt(data_bytes, self.params)
             return crypted_data
@@ -51,7 +52,7 @@ class Crypto:
     
     def decrypt_data(self, encrypted_data):
         """Déchiffre les données avec FPE."""
-        #print(encrypted_data, type(encrypted_data), "encrypted_data")
+        print(encrypted_data, type(encrypted_data), "encrypted_data")
         try:
             encrypted_data = encrypted_data.encode('utf-8')
             # Déchiffrer les données
@@ -60,8 +61,8 @@ class Crypto:
             if isinstance(decrypted_data, bytes):
                 decrypted_data = decrypted_data.decode('utf-8')
 
-            return decrypted_data
-            
+            return decrypted_data 
+
         except tink.TinkError as e:
             print(f"Erreur lors du déchiffrement des données : {e}")
             return None

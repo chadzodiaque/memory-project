@@ -23,7 +23,12 @@ class InsuranceType(models.Model):
     def _encrypt_value(self, value):
         """Chiffre une valeur si elle n'est pas vide."""
         try:
-            return self.crypto.encrypt_data(value) if value else value
+            if value:
+                value_encrypted = self.crypto.encrypt_data(value)
+                value_encoded = value_encrypted.encode('utf-8')
+                return value_encoded
+            else:
+                return value
         except Exception as e:
             _logger.error(f"Erreur lors du chiffrement de la valeur: {e}")
             return value

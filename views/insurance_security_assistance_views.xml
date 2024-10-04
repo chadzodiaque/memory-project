@@ -18,9 +18,7 @@
         <field name="arch" type="xml">
             <tree string="Assistance Tree">
                 <field name="name"/>
-                <field name="email"/>
                 <field name="state"/>
-                <field name="creation_date"/>
                 
             </tree>
         </field>
@@ -44,17 +42,6 @@
                             <field name="name"/>
                         </h1>
                     </div>
-                    
-                    <group>
-                        <group string="Date de création">
-                           <field name="creation_date"/>
-                        </group>
-                        
-                        <group string="Détails sur l'utilisateur">
-                            <field name="user_id"  options="{'no_create': True}"  />
-                            <field name="email"  widget="email"/>
-                        </group>
-                    </group>
                     <notebook>
                         <page name="Description de l'assistance'" string="Description">
                             <field name="description" />

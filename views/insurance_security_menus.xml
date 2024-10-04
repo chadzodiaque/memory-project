@@ -7,16 +7,11 @@
             <menuitem id="insurance_security_demand_menu_action" name="Demande de police d'assurance" action="insurance_security_demand_action" sequence="5"/>
             <menuitem id="insurance_security_claims_menu_action" name="Réclamations en assurance" action="insurance_security_claims_action" sequence="5"/>
             <menuitem id="insurance_security_payments_menu_action" name="Versement des primes d'assurance" action="insurance_security_payments_action" sequence="5"/>
+            <menuitem id="insurance_security_cars_menu_action" name="Voitures enregistrées" action="insurance_security_cars_action" sequence="5"/>
             <menuitem id="insurance_security_assistance_menu_action" name="Service d'assistance" action="insurance_security_assistance_action" sequence="5"/>
         </menuitem>
-
-        <menuitem id="insurance_customer_menu" name="Customers" action="base.action_partner_customer_form" sequence="5" />
-        <menuitem id="insurance_employee_menu" name="Employee" action="hr.open_view_employee_list_my" sequence="5" />
-        <menuitem id="insurance_settings_menu" name="Paramètres" sequence="5" >
-            <menuitem id="insurance_security_type_menu_action" name="Type d'assurance" action="insurance_security_type_action" sequence="5"/>
-            <menuitem id="insurance_security_product_menu_action" name="Produit d'assurance" action="insurance_security_product_action" sequence="5"/>
-            
-        </menuitem>
+        <menuitem id="insurance_security_agents_menu_action" name="Agents d'assurance" action="insurance_security_agents_action" sequence="5"/>
+        <menuitem id="insurance_security_clients_menu_action" name="Clients" action="insurance_security_clients_action" sequence="5"/>
         
     </menuitem>
 
