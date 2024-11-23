@@ -29,15 +29,15 @@ class InsurancePayment(models.Model):
     # Initialisation de cryptofpe le code source pour le cryptage et le décryptage
     crypto = Crypto()
 
-    _encrypted_fields = ['name']
-    _decrypted_fields = ['name', 'date', 'policy_name', 'policy_prime', 'agent_name', 'client_name']
+    _agent_fields = ['agent_name']
+    _client_fields = ['client_name']
+    _policy_fields = ['policy_name']
 
     
     @api.model
     def create(self, vals):
         if vals.get('name', 'New') == 'New':
             vals['name'] = self.env['ir.sequence'].next_by_code('payments.details') or 'New'
-        vals = self._encrypt_fields(vals)
         return super(InsurancePayment, self).create(vals)
     
     @api.model
@@ -49,14 +49,29 @@ class InsurancePayment(models.Model):
         data = super(InsurancePayment, self).export_data(fields_to_export)
 
         # Récupérer les indices des champs à déchiffrer
-        encrypted_field_indices = [i for i, field in enumerate(fields_to_export) if field in self._decrypted_fields]
+        agents_field_indices = [i for i, field in enumerate(fields_to_export) if field in self._agent_fields]
+        clients_field_indices = [i for i, field in enumerate(fields_to_export) if field in self._client_fields]
+        policy_field_indices = [i for i, field in enumerate(fields_to_export) if field in self._policy_fields]
+
+        records = self.env['insurance.security.payments'].search([])
+        clients_keyset_keys = [record.client_id.keyset_key for record in records]
+        agents_keyset_keys = [record.agent_id.keyset_key for record in records]
+        i = 0
 
         # Parcourir les enregistrements pour déchiffrer les champs cryptés
         for row in data['datas']:
-            for index in encrypted_field_indices:
+            json_clients = clients_keyset_keys[i]
+            json_agents = agents_keyset_keys[i]
+            i += 1
+            for index in agents_field_indices:
                 if row[index]:
-                    row[index] = self._decrypt_value(row[index])
-
+                    row[index] = self._decrypt_value(row[index], json_agents)
+            for index in clients_field_indices:
+                if row[index]:
+                    row[index] = self._decrypt_value(row[index], json_clients)
+            for index in policy_field_indices:
+                if row[index]:
+                    row[index] = self._decrypt_value(row[index], json_clients)
         return data
 
     def write(self, vals):
@@ -88,13 +103,7 @@ class InsurancePayment(models.Model):
                 record.policy_name = record._decrypted_value(record.policy_name) 
              """
 
-    def _encrypt_value(self, value):
-        """Chiffre une valeur si elle n'est pas vide."""
-        try:
-            return self.crypto.encrypt_data(value) if value else value
-        except Exception as e:
-            _logger.error(f"Erreur lors du chiffrement de la valeur: {e}")
-            return value
+
 
     def _decrypt_value(self, value):
         """Déchiffre une valeur si elle n'est pas vide."""
@@ -105,22 +114,29 @@ class InsurancePayment(models.Model):
             _logger.error(f"Erreur lors du déchiffrement de la valeur: {e}")
             return value
 
-    def _encrypt_fields(self, vals):
-        """Chiffre les champs définis dans _encrypted_fields."""
-        for field in self._encrypted_fields:
-            print(field,'field')
-            if field in vals and vals[field]:
-                print(vals[field],'vals[field]')
-                vals[field] = self._encrypt_value(vals[field])
-        return vals
-
     def _decrypt_fields(self, records):
         """Déchiffre les champs définis dans _encrypted_fields pour chaque enregistrement."""
         for record in records:
-            print(record, 'record')
-            for field in self._decrypted_fields:
-                if record[field]:
-                    print(record[field],'record[field]')
-                    record[field] = self._decrypt_value(record[field])
+            client_id = record.get('client_id')
+            if client_id:
+                client = self.env['insurance.security.clients'].browse(client_id[0])
+                print(client, 'client')
+                json = client.keyset_key
+                for field in self._client_fields:
+                    # Parcours des enregistrements pour déchiffrer les champs
+                    if record[field]:
+                        record[field] = self._decrypt_value(record[field], json)
+                for field in self._policy_fields:
+                    # Parcours des enregistrements pour déchiffrer les champs
+                    if record[field]:
+                        record[field] = self._decrypt_value(record[field], json)
+            agent_id = record.get('agent_id')
+            if agent_id:
+                agent = self.env['insurance.security.agents'].browse(agent_id[0])
+                json = agent.keyset_key
+                for field in self._agent_fields:
+                    # Parcours des enregistrements pour déchiffrer les champs
+                    if record[field]:
+                        record[field] = self._decrypt_value(record[field], json)
         return records
 

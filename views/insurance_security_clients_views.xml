@@ -63,9 +63,6 @@
                         <page string="Liste des déclaration de sinistres">
                             <field name="claims_ids" options="{'no_create': True}" />
                         </page>
-                        <page string="Liste des demandes en assurance automobile">
-                            <field name="demands_ids" options="{'no_create': True}" />
-                        </page>
                          <page string="Liste des voitures enregistrés">
                             <field name="cars_ids" options="{'no_create': True}" />
                         </page>

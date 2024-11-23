@@ -415,12 +415,6 @@
         <field name="groups" eval="[(4, ref('insurance_security.access_customers_insurance_security_group'))]"/>
     </record>
 
-    <record id="access_for_insurance_security_demand" model="ir.rule">
-        <field name="name">Access Insurance demand</field>
-        <field name="model_id" ref="model_insurance_security_demand" />
-        <field name="domain_force">[('client_id.id', '=', user.partner_id.id)]</field>
-        <field name="groups" eval="[(4, ref('insurance_security.access_customers_insurance_security_group'))]"/>
-    </record>
 
     <record id="access_for_insurance_security_claims" model="ir.rule">
         <field name="name">Access Insurance Claims</field>

@@ -1,4 +1,10 @@
 from odoo import fields, models, api, _
+from odoo.exceptions import UserError, ValidationError
+
+from ..utils.cryptofpe import Crypto
+import logging
+
+_logger = logging.getLogger(__name__)
 
 class InsuranceDemand(models.Model):
 
@@ -40,6 +46,7 @@ class InsuranceDemand(models.Model):
         readonly=True
     )
 
+    
     def action_open_attachments(self):
         return {
             'type': 'ir.actions.act_window',
@@ -69,7 +76,9 @@ class InsuranceDemand(models.Model):
     def create(self, values):
         rtn = super().create(values)
         if rtn.name == 'New':
-            rtn.name = self.env['ir.sequence'].next_by_code('claims.details') or 'New'
+            rtn.name = self.env['ir.sequence'].next_by_code('demand.details') or 'New'
         rtn.state = "progress"
         rtn.client_id = self.env.user.partner_id
         return rtn 
+    
+    
