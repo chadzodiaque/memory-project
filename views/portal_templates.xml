@@ -28,7 +28,7 @@
                 <a href="/my/insurance/">Mon assurance</a> / <span>Mes demandes d'assurance</span>
             </li>
             <li t-if="page_name == 'portal_list_claims'" class="breadcrumb-item ">
-                <a href="/my/insurance/">Mon assurance</a> / <span>Mes réclamations d'assurance</span>
+                <a href="/my/insurance/">Mon assurance</a> / <span>Mes déclaration de sinistres</span>
             </li>
             <li t-if="page_name == 'portal_list_payments'" class="breadcrumb-item ">
                 <a href="/my/insurance/">Mon assurance</a> / <span>Mes versements en prime d'assurance</span>
@@ -43,25 +43,19 @@
                 <a href="/my/insurance/">Mon assurance</a> / <a href="/my/insurance/demands">Mes demandes d'assurance</a> / <span t-out="demand.name"/>
             </li>
             <li t-if="page_name == 'portal_claims_form_view'" class="breadcrumb-item ">
-                <a href="/my/insurance/">Mon assurance</a> / <a href="/my/insurance/claims">Mes réclamations d'assurance</a> / <span t-out="claim.name"/>
+                <a href="/my/insurance/">Mon assurance</a> / <a href="/my/insurance/claims">Mes déclaration de sinistres</a> / <span t-out="claim.name"/>
             </li>
             <li t-if="page_name == 'portal_payments_form_view'" class="breadcrumb-item ">
                 <a href="/my/insurance/">Mon assurance</a> / <a href="/my/insurance/payments">Mes versements en prime d'assurance</a> / <span t-out="payment.name"/>
             </li>
             <li t-if="page_name == 'portal_new_demand_assistance'" class="breadcrumb-item ">
-                <a href="/my/insurance/">Mon assurance</a> / <a href="/my/insurance/assistances">Mes demandes d'assistance</a> / <span>Nouvelle demande</span>
+                <a href="/my/insurance/">Mon assurance</a> / <a href="/my/insurance/assistances">Mes demandes d'assistance</a> / <span>Nouvelle demande d'assistance</span>
             </li>
             <li t-if="page_name == 'portal_new_demand_insurance'" class="breadcrumb-item ">
-                <a href="/my/insurance/">Mon assurance</a> / <a href="/my/insurance/demands">Mes demandes d'assurance</a> / <a href="/my/insurance/demands/new/demand/products"> Nouvelle demande / Mes demandes d'assurance</a> / demandproduct / <span t-out="product.id"/>
-            </li>
-            <li t-if="page_name == 'portal_list_products'" class="breadcrumb-item ">
-                <a href="/my/insurance/">Mon assurance</a> / <a href="/my/insurance/demands">Mes demandes d'assurance</a> /  <span>Nouvelle demande</span> / <span>Liste des produits</span>
-            </li>
-            <li t-if="page_name == 'portal_product_description_view'" class="breadcrumb-item ">
-                <a href="/my/insurance/">Mon assurance</a> / <a href="/my/insurance/demands">Mes demandes d'assurance</a>  / <a href="/my/insurance/demands/new/demand/products"> Nouvelle demande / Mes demandes d'assurance</a> / <span t-out="product.id"/>
+                <a href="/my/insurance/">Mon assurance</a> / <a href="/my/insurance/demands">Mes demandes d'assurance</a> /  <span>Nouvelle demande d'assurance </span>
             </li>
             <li t-if="page_name == 'portal_new_claim_insurance'" class="breadcrumb-item ">
-                <a href="/my/insurance/">Mon assurance</a> / <a href="/my/insurance/claims">Mes réclamations d'assurance</a> /  <span>Nouvelle réclamation</span>
+                <a href="/my/insurance/">Mon assurance</a> / <a href="/my/insurance/claims">Mes déclaration de sinistres</a> /  <span>Nouvelle déclaration</span>
             </li>
             
         </xpath>
@@ -71,7 +65,7 @@
     <template id="portal_my_insurance">
         <t t-call="portal.portal_layout">
             <div class="row my-4">
-                <div class="col-sm-3">
+                <!-- <div class="col-sm-3">
                     <div class="card rounded-top text-center">
                         <div class="card-body ">
                             <img src="/insurance_security/static/images/Insurance-pana.png" class="card-img-top" />
@@ -85,12 +79,12 @@
                     <div class="card text-center">
                         <div class="card-body ">
                             <img src="/insurance_security/static/images/Insurance-amico.png" class="card-img-top" />
-                            <h5 class="card-title my-2 ">Mes réclamations d'assurance </h5>           
+                            <h5 class="card-title my-2 ">Mes déclaration de sinistres </h5>           
                             <a t-attf-href="/my/insurance/claims" class="btn btn-primary">Allez <span class="badge badge-primary text-bg-light text-center rounded-pill"> <t t-out="insurance_claims_count"/>  </span>  </a>
                 
                         </div> 
                     </div>
-                </div>
+                </div>-->
                 
                 <div class="col-sm-3">
                     <div class="card text-center">
@@ -101,9 +95,9 @@
                             
                         </div> 
                     </div>
-                </div>
+                </div> 
 
-                <div class="col-sm-3">
+                <!-- <div class="col-sm-3">
                     <div class="card text-center">
                         <div class="card-body ">
                             <img src="/insurance_security/static/images/Money-income.png" class="card-img-top" />
@@ -123,7 +117,7 @@
                             
                         </div> 
                     </div>
-                </div>
+                </div> -->
 
             </div>
         
@@ -138,7 +132,7 @@
                 </li>
                 <li class="list-group-item d-flex justify-content-between align-items-center">
                     <a t-attf-href="/my/insurance/claims">
-                        Mes réclamations
+                        Mes déclarations
                     </a>
                     <span class="badge badge-primary text-bg-secondary rounded-pill"><t t-out="insurance_claims_count"/></span>
                 </li>
@@ -171,11 +165,9 @@
                     <thead>
                         <tr class="active">
                             <th class="text-center">ID</th>
-                            <th class="text-center">Nom de la police</th>
+                            <th class="text-center">Numéro de police</th>
                             <th class="text-center">Temps d'émission de la police</th>
-                            <th class="text-center">Produit d'assurance</th>
                             <th class="text-center">Prime d'assurance</th>
-                            <th class="text-center">Montant garantie</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -195,14 +187,9 @@
                                     <td class="text-center">
                                         <t t-out="policy.duration"/>
                                     </td>
+                                    
                                     <td class="text-center">
-                                        <t t-out="policy.product_name"/>
-                                    </td>
-                                    <td class="text-center">
-                                        <t t-out="policy.product_prime_price"/>
-                                    </td>
-                                    <td class="text-center">
-                                        <t t-out="policy.product_amount_guarantee"/>
+                                        <t t-out="policy.prime"/>
                                     </td>
                                 </tr>
                             </t>
@@ -246,15 +233,7 @@
                                     <div class="card-body">
                                         <h3 class="card-title my-2 text-primary text-center font-italic me-1 ">Détails de la police d'assurance</h3>           
                                         <hr/>
-                                        <div class="row">
-                                            <div class="col-sm-4">
-                                                <h5 class="mb-0">Nom du produit d'assurance</h5>
-                                            </div>
-                                            <div class="col-sm-4">
-                                                <p class="mb-0"><t t-out="policy.product_name"/></p>
-                                            </div>
-                                        </div>
-                                        <hr/>
+                                        
                                         <div class="row">
                                             <div class="col-sm-4">
                                                 <h5 class="mb-0">Agent d'assurance</h5>
@@ -302,22 +281,13 @@
                                         <hr/>
                                         <div class="row">
                                             <div class="col-sm-4">
-                                                <h5 class="mb-0">Prime d'assurance</h5>
+                                                <h5 class="mb-0">Prime d'assurance versée</h5>
                                             </div>
                                             <div class="col-sm-4">
-                                                <p class="mb-0"><t t-out="policy.product_prime_price"/> <t t-out="policy.currency_id.symbol"/></p>
+                                                <p class="mb-0"><t t-out="policy.prime"/> <t t-out="policy.currency_id.symbol"/></p>
                                             </div>
                                         </div>
-                                        <hr/>
-                                        <div class="row">
-                                            <div class="col-sm-4">
-                                                <h5 class="mb-0">Montant de garantie</h5>
-                                            </div>
-                                            <div class="col-sm-4">
-                                                <p class="mb-0"><t t-out="policy.product_amount_guarantee"/> <t t-out="policy.currency_id.symbol"/></p>
-                                                
-                                            </div>
-                                        </div>
+                                        
                                     </div>
                                 </div>
                                 <div class="card mb-4">
@@ -528,8 +498,8 @@
                 </div>
             </t>
             <div class="d-flex my-2 justify-content-end">
-                <a t-attf-href="/my/insurance/demands/new/demand/products" class="btn btn-primary btn-rounded">
-                    Effectuer une demande d'assurance
+                <a t-attf-href="/my/insurance/demands/new" class="btn btn-primary btn-rounded">
+                    Effectuer une demande d'assurance auto
                 </a>
             </div>
             <t t-if="demands">
@@ -580,7 +550,7 @@
             </t>
             
             <t t-else="None">
-                <p class="text-center my-2">Aucune demande de police d'assurance n'a été effectuée</p>
+                <p class="text-center my-2">Aucune demande de police d'assurance auto n'a été effectuée</p>
             </t>
             
         </t>
@@ -622,10 +592,20 @@
                                         <hr/>
                                         <div class="row">
                                             <div class="col-sm-3">
-                                                <p class="mb-0">Produit d'assurance</p>
+                                                <p class="mb-0">Type d'assurance</p>
                                             </div>
                                             <div class="col-sm-9">
-                                                <p class="mb-0"><t t-out="demand.product_id.name"/></p>
+                                                <p class="mb-0">Automobile</p>
+                                            </div>
+                                        </div>
+                                        <hr/>
+
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <p class="mb-0">Nombre de véhicules</p>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <p class="mb-0"><t t-out="demand.cars_number"/></p>
                                             </div>
                                         </div>
                                         <hr/>
@@ -655,11 +635,9 @@
                                         <hr/>
                                         <div class="row">
                                             <p class="m-2 me-1"><t t-out="demand.description"/></p>
-                                        </div> 
-                                                               
+                                        </div>                        
                                     </div>
                                 </div>
-                                
                             </div>
                             
                         </div>
@@ -670,13 +648,13 @@
         </xpath>
     </template>
 
-    <!-- Liste des réclamations d'assurance d'une personne -->
+    <!-- Liste des déclaration de sinistres d'une personne -->
     <template id="portal_list_claims">
         <t t-call="portal.portal_layout">
             <t t-set="breadcrumbs_searchbar" t-value="True"/>
 
             <t t-call="portal.portal_searchbar">
-                <t t-set="title">Claims</t>
+                <t t-set="title">Sinistres</t>
             </t>
             <t t-if="request.params.get('message')">
                 <div class="alert alert-success" role="alert" >
@@ -685,7 +663,7 @@
             </t>
             <div class="d-flex my-2 justify-content-end">
                 <a t-attf-href="/my/insurance/claims/new/claim" class="btn btn-primary btn-rounded">
-                    Faire une réclamation
+                    Faire une déclaration de sinistres
                 </a>
             </div>
             <t t-if="claims">
@@ -693,9 +671,9 @@
                     <thead>
                         <tr class="active">
                             <th class="text-center">ID</th>
-                            <th class="text-center">Numéro de réclamation</th>
-                            <th class="text-center">Montant de réclamation</th>
-                            <th class="text-center">Date de réclamation</th>
+                            <th class="text-center">Numéro de déclaration</th>
+                            <th class="text-center">Montant de compensation</th>
+                            <th class="text-center">Date de déclaration</th>
                             <th class="text-center">Police d'assurance associé</th>
                             <th class="text-center">Etat</th>
                             
@@ -716,13 +694,13 @@
                                         </a>
                                     </td>
                                     <td class="text-center">
-                                        <t t-out="claim.amount"/>
+                                        <t t-out="claim.compensation"/>
                                     </td>
                                     <td class="text-center">
                                         <t t-out="claim.date_claims"/>
                                     </td>
                                     <td class="text-center">
-                                        <t t-out="claim.policy_product_name"/>
+                                        <t t-out="claim.policy_name"/>
                                     </td>
                                     <td class="text-center">
                                         <t t-if="claim.state == 'progress'">
@@ -746,13 +724,13 @@
                 </t >
             </t>
             <t t-else="None">
-                <p class="text-center my-2">Aucune réclamation de police d'assurance</p>
+                <p class="text-center my-2">Aucune déclaration de sinistres</p>
             </t>
             
         </t>
     </template>
 
-    <!-- Affichage  d'une réclamation d'assurance -->
+    <!-- Affichage  d'une déclaration d'assurance -->
     <template id="portal_claim_form_view"  inherit_id="portal.portal_sidebar">
         <xpath expr="//div[hasclass('o_portal_sidebar')]" position="inside">
             <t t-if="page_name == 'portal_claims_form_view'">
@@ -773,20 +751,20 @@
                             <div class="col-lg-8">
                                 <div class="card mb-4">
                                     <div class="card-body">
-                                        <h3 class="card-title my-2 text-primary text-center font-italic me-1 ">Détails sur la réclamation</h3>           
+                                        <h3 class="card-title my-2 text-primary text-center font-italic me-1 ">Détails sur la déclaration</h3>           
                                         <hr/>
                                         <div class="row">
                                             <div class="col-sm-4">
-                                                <p class="mb-0">Montant de réclamation</p>
+                                                <p class="mb-0">Montant de compensation</p>
                                             </div>
                                             <div class="col-sm-4">
-                                                <p class="mb-0"><t t-out="claim.amount"/> <t t-out="claim.currency_id.symbol"/></p>
+                                                <p class="mb-0"><t t-out="claim.compensation"/> <t t-out="claim.currency_id.symbol"/></p>
                                             </div>
                                         </div>
                                         <hr/>
                                         <div class="row">
                                             <div class="col-sm-4">
-                                                <p class="mb-0">Date de réclamation</p>
+                                                <p class="mb-0">Date de déclaration</p>
                                             </div>
                                             <div class="col-sm-4">
                                                 <p class="mb-0"><t t-out="claim.date_claims"/></p>
@@ -804,7 +782,7 @@
                                         <hr/>
                                         <div class="row">
                                             <div class="col-sm-4">
-                                                <p class="mb-0">Etat de réclamation</p>
+                                                <p class="mb-0">Etat de déclaration</p>
                                             </div>
                                             <div class="col-sm-4">
                                                 <t t-if="claim.state == 'progress'">
@@ -823,168 +801,14 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="card mb-4">
-                                    <div class="card-body">
-                                        <h3 class="card-title my-2 text-primary text-center font-italic me-1 "> Description de la réclamation </h3>           
-                                        <hr/>
-                                        <div class="row">
-                                            <p class="m-2 me-1"><t t-out="claim.description"/></p>
-                                        </div>      
-                                    </div>
-                                </div>
-                                
                             </div>
-                            
-                        </div>
-                        
-                    </div>
-                </section>
-            </t>
-        </xpath>
-    </template>
-
-    <!--Liste des produits pour la demande d'assurance -->
-    <template id="portal_list_products">
-        <t t-call="portal.portal_layout">
-            <div class="row my-4">
-                <t t-if="products">
-                    <t t-foreach="products" t-as="product">
-                        <div class="col-sm-4">
-                                <div class="card rounded-top text-center">
-                                    <div class="card-body ">
-                                        <t t-if="product.image">
-                                            <img t-attf-src="data:image/*;base64,{{product.image}}" t-att-alt="product.name " style="max-width: 100%; max-height: 100vh; margin: auto;" class="rounded-4 fit"  />
-                                        </t> 
-                                        <t t-else="">
-                                            <img src="/insurance_security/static/images/Insurance-cuate.png" style="max-width: 100%; max-height: 100vh; margin: auto;" class="rounded-4 fit"  />
-                                        </t> 
-                                        <h5 class="card-title my-2 "><t t-out="product.name"/> </h5> 
-                                        <hr/>
-                                        <p class="card-text"> <span class="fw-bold">Prime d'assurance :</span> <t t-out="product.prime_price"/><span> <t t-out="product.currency_id.symbol"/></span></p>
-                                        <p class="card-text"> <span class="fw-bold">Montant garantie :</span> <t t-out="product.amount_guarantee"/><span> <t t-out="product.currency_id.symbol"/></span></p> 
-                                        <p class="card-text"> <span class="fw-bold">Type de couverture :</span> <t t-out="product.coverage_type"/></p>         
-                                        <a t-attf-href="/my/insurance/new/demand/products/#{product.id}" class="btn btn-primary">Description </a>
-                                        
-                                    </div> 
-                                </div>
-                        </div>
-                    </t>
-                </t>
-                
-                <t t-else="None">
-                    <p class="text-center my-2">Aucune produits d'assurance n'a été proposée</p>
-                
-                </t>
-                
-            </div>
-        </t>
-    </template>
-
-    <!-- Affichage d'un produit d'assurance  -->
-    <template id="portal_product_description_view"  inherit_id="portal.portal_sidebar">
-        <xpath expr="//div[hasclass('o_portal_sidebar')]" position="inside">
-            <t t-if="page_name == 'portal_product_description_view'">
-                <!-- content -->
-                <section class="py-5">
-                    <div class="container">
-                        <div class="row gx-5">
-                            <div class="d-flex justify-content-end">
-                                <a t-attf-href="/my/insurance/demands/new/demandproduct/#{product.id}" class="btn btn-primary btn-rounded">
-                                    Faire une demande
-                                </a>
-                            </div>  
-                            <aside class="col-lg-6">
-                                <div class="border rounded-4 mb-3 d-flex justify-content-center">
-                                    <t t-if="product.image">
-                                        <img t-attf-src="data:image/*;base64,{{product.image}}" t-att-alt="product.name " style="max-width: 100%; max-height: 100vh; margin: auto;" class="rounded-4 fit"  />
-                                    </t> 
-                                    <t t-else="">
-                                        <img src="/insurance_security/static/images/Insurance-cuate.png" style="max-width: 100%; max-height: 100vh; margin: auto;" class="rounded-4 fit"  />
-                                    </t>   
-                                    <!-- <img  class="rounded-4 fit" src="https://mdbcdn.b-cdn.net/img/bootstrap-ecommerce/items/detail1/big.webp" /> -->
-                                    
-                                </div>
-                                <!-- thumbs-wrap.// -->
-                                <!-- gallery-wrap .end// -->
-                            </aside>
-                            <main class="col-lg-6">
-                                <div class="ps-lg-3">
-                                    <h4 class="title text-dark">
-                                        <t t-out="product.name"/>
-                                    </h4>
-                                    <hr/>
-                                <div class="row mt-2">
-                                    <div class="row my-2">
-                                        <dt class="col-5">Type d'assurance :</dt>
-                                        <dd class="col-7">
-                                            <t t-foreach="product.type_ids" t-as="type">
-                                                <span class="badge text-bg-info"><t t-out="type.name"/> </span>
-                                            </t>
-                                            
-                                        </dd>
-                                    </div>
-                                    <div class="row my-1">
-                                        <dt class="col-5">Type de couverture :</dt>
-                                        <dd class="col-7">
-                                            <p><t t-out="product.coverage_type"/></p>
-                                        </dd>
-                                    </div>
-                                    <div class="row my-1">
-                                        <dt class="col-5">Prime d'assurance :</dt>
-                                        <dd class="col-7">
-                                            <p><t t-out="product.prime_price"/><span> <t t-out="product.currency_id.symbol"/></span></p>
-                                        </dd>
-                                    </div>
-                                    <div class="row my-1">
-                                        <dt class="col-5">Montant garantie :</dt>
-                                        <dd class="col-7">
-                                            <p><t t-out="product.amount_guarantee"/><span> <t t-out="product.currency_id.symbol"/></span></p>
-                                        </dd>
-                                    </div>
-                                </div>
-                                </div>
-                            </main>
-                        </div>
-                    </div>
-                </section>
-                <!-- content -->
-                <section class="bg-light border-top py-4">
-                    <div class="container">
-                        <div class="row gx-4">
-                        <div class="mb-4">
-                            <!-- Tabs -->
-                            <ul class="nav nav-pills nav-justified mb-3 px-2" id="myTab" role="tablist">
-                                <li class="nav-item d-flex" role="presentation">
-                                    <button class="nav-link active" id="advantages-tab" data-bs-toggle="tab" data-bs-target="#advantages" type="button" role="tab" aria-controls="advantages" aria-selected="true">Avantages et exclusions</button>
-                                </li>
-                                <li class="nav-item d-flex" role="presentation">
-                                    <button class="nav-link" id="conditions-tab" data-bs-toggle="tab" data-bs-target="#conditions" type="button" role="tab" aria-controls="conditions" aria-selected="false">Conditions et modalités</button>
-                                </li>
-                                <li class="nav-item d-flex" role="presentation">
-                                    <button class="nav-link" id="options-tab" data-bs-toggle="tab" data-bs-target="#options" type="button" role="tab" aria-controls="options" aria-selected="false">Options de personnalisation</button>
-                                </li>
-                            </ul>
-
-                            <!-- Tab panes -->
-                            <div class="tab-content" id="myTabContent">
-                            <div class="tab-pane fade show active p-3" id="advantages" role="tabpanel" aria-labelledby="home-tab">
-                                <t t-out="product.advantages"/>
-                            </div>
-                            <div class="tab-pane fade p-3" id="conditions" role="tabpanel" aria-labelledby="profile-tab">
-                                <t t-out="product.conditions"/>
-                            </div>
-                            <div class="tab-pane fade p-3" id="options" role="tabpanel" aria-labelledby="profile-tab">
-                                <t t-out="product.options"/>
-                            </div>
-                            </div>
-                            <!-- Tabs -->
-                        </div>
                         </div>
                     </div>
                 </section>
             </t>
         </xpath>
     </template>
+
 
     <!-- Formulaire de demande d'assistance -->
     <template id="portal_new_demand_assistance">
@@ -1137,7 +961,7 @@
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="mb-5">
-                                                <h4 class="text-center">Formulaire de demande d'une police d'assurance</h4>
+                                                <h4 class="text-center">Formulaire de demande d'une police d'assurance auto</h4>
                                                 <hr/>
                                             </div>
                                         </div>
@@ -1151,6 +975,13 @@
                                                     <label class="col-form-label" for="name">Intitulé de la demande</label>
                                                     <input type="char" name="name" id="name" class="form-control"/>
                                                     <small id="nameHelp" class="form-text text-muted"> Titre de la demande</small>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="mb-3">
+                                                    <label class="col-form-label" for="cars_number">Nombre de véhicule(s)</label>
+                                                    <input type="number" name="cars_number" id="cars_number" class="form-control"/>
+                                                    <small id="cars_numberHelp" class="form-text text-muted"> Nombre de véhicule(s)</small>
                                                 </div>
                                             </div>
                                             <div class="col-12">
@@ -1245,7 +1076,7 @@
        
     </template>
 
-    <!-- Formulaire de réclamations d'une assurance -->
+    <!-- Formulaire de déclaration d'une assurance -->
     <template id="portal_new_claim_insurance">
         <t t-call="portal.portal_layout">
             <section class="p-3 p-md-4 p-xl-5">
@@ -1257,7 +1088,7 @@
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="mb-5">
-                                                <h4 class="text-center">Formulaire de réclamation d'assurance</h4>
+                                                <h4 class="text-center">Formulaire de déclaration de sinistres</h4>
                                                 <hr/>
                                             </div>
                                         </div>
@@ -1270,14 +1101,14 @@
                                                 <div class="mb-3">
                                                     <label class="col-form-label" for="name">Documents pour preuve</label>
                                                     <input type="file" name="proofs" id="proofs" accept=".pdf" multiple="true" class="file form-control"/>
-                                                    <small id="proofsHelp" class="form-text text-muted"> Insérer les document adéquates stipuler pour appuyer votre réclamation</small>
+                                                    <small id="proofsHelp" class="form-text text-muted"> Insérer les document adéquates stipuler pour appuyer votre déclaration</small>
                                                 </div>
                                             </div>
                                             <div class="col-12">
                                                 <div class="mb-3">
-                                                    <label class="col-form-label" for="description">Détails sur la réclamation d'assurance</label>
+                                                    <label class="col-form-label" for="description">Détails sur la déclaration du sinistre</label>
                                                     <textarea class="form-control" name="description" id="description" rows="4" placeholder="Détails"></textarea>
-                                                    <small id="descriptionHelp" class="form-text text-muted">Détails de votre réclamation d'assurance. Préciser les raisons de votre réclamation en assurance</small>
+                                                    <small id="descriptionHelp" class="form-text text-muted">Détails de votre déclaration d'un sinistre. Préciser les raisons de votre déclaration</small>
                                                 </div>
                                             </div>
                                             <div class="col-12">
@@ -1296,7 +1127,7 @@
                                             </div>
                                             <div class="col-12">
                                                 <div class="d-grid">
-                                                    <button class="btn bsb-btn-xl  btn-primary" type="submit"> Ajouter une réclamation</button>
+                                                    <button class="btn bsb-btn-xl  btn-primary" type="submit"> Ajouter une déclaration</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -1339,22 +1170,22 @@
                         <label class="col-sm-2 col-form-label" for="name">Documents pour preuve</label>
                         <div class="col-sm-10">
                             <input type="file" name="proofs" id="proofs" multiple="true" class="file"/>
-                            <small id="proofsHelp" class="form-text text-muted"> <br/> Insérer les document adéquates stipuler pour appuyer votre réclamation</small>
+                            <small id="proofsHelp" class="form-text text-muted"> <br/> Insérer les document adéquates stipuler pour appuyer votre déclaration</small>
                         </div>
                     </div>
 
                     <div class="form-group row mt-2">
-                        <label class="col-sm-2 col-form-label" for="description">Détails sur la réclamation d'assurance</label>
+                        <label class="col-sm-2 col-form-label" for="description">Détails sur la déclaration d'assurance</label>
                         <div class="col-sm-10">
                             <textarea class="form-control" name="description" id="description" rows="4"></textarea>
-                            <small id="descriptionHelp" class="form-text text-muted">Détails de votre réclamation d'assurance. Préciser les raisons de votre réclamation en assurance</small>
+                            <small id="descriptionHelp" class="form-text text-muted">Détails de votre déclaration d'assurance. Préciser les raisons de votre déclaration en assurance</small>
                         </div>
                     </div>
 
                     <div class="form-group row mt-2">
                         
                         <div class="col-sm-10">
-                            <button class="btn btn-primary" type="submit"> Ajouter une réclamation</button>
+                            <button class="btn btn-primary" type="submit"> Ajouter une déclaration</button>
                         </div>
                     </div>
                 </form> 
@@ -1377,9 +1208,8 @@
                     <thead>
                         <tr class="active">
                             <th class="text-center">ID</th>
-                            <th class="text-center">Titre de versement</th>
+                            <th class="text-center">Numérp de versement</th>
                             <th class="text-center">Montant de prime</th>
-                            <th class="text-center">Date de versement</th>
                             <th class="text-center">Police d'assurance</th>
                         </tr>
                     </thead>
@@ -1398,10 +1228,7 @@
                                         </a>
                                     </td>
                                     <td class="text-center">
-                                        <t t-out="payment.amount"/>
-                                    </td>
-                                    <td class="text-center">
-                                        <t t-out="payment.amount_date"/>
+                                        <t t-out="payment.policy_prime"/>
                                     </td>
                                     <td class="text-center">
                                         <t t-out="payment.policy_id.name"/>
@@ -1420,7 +1247,7 @@
     </template>
 
     <!-- Affichage d'un payment de prime d'assurance  -->
-     <template id="portal_payment_form_view"  inherit_id="portal.portal_sidebar">
+    <template id="portal_payment_form_view"  inherit_id="portal.portal_sidebar">
         <xpath expr="//div[hasclass('o_portal_sidebar')]" position="inside">
             <t t-if="page_name == 'portal_payments_form_view'">
                 <section style="background-color: #eee;">
@@ -1442,15 +1269,7 @@
                                     <div class="card-body">
                                         <h3 class="card-title my-2 text-primary text-center font-italic me-1 ">Détails sur le versement</h3>           
                                         <hr/>
-                                        <div class="row">
-                                            <div class="col-sm-3">
-                                                <p class="mb-0">Date de versement</p>
-                                            </div>
-                                            <div class="col-sm-9">
-                                                <p class="mb-0"><t t-out="payment.amount_date"/></p>
-                                            </div>
-                                        </div>
-                                        <hr/>
+                                        
                                         <div class="row">
                                             <div class="col-sm-3">
                                                 <p class="mb-0">Police d'assurance</p>
@@ -1465,7 +1284,7 @@
                                                 <p class="mb-0">Montant de prime</p>
                                             </div>
                                             <div class="col-sm-9">
-                                                <p class="mb-0"><t t-out="payment.amount"/> <t t-out="payment.currency_id.symbol"/></p>
+                                                <p class="mb-0"><t t-out="payment.policy_prime"/> <t t-out="payment.policy_currency_id.symbol"/></p>
                                             </div>
                                         </div>
                                        

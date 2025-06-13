@@ -15,8 +15,6 @@
         <field name="category_id" ref="insurance_security.access_insurance_security_category" />
     </record>
 
-    
-    
     <record id="access_customers_insurance_security_group" model="res.groups">
         <field name="name">Clients Insurance Security</field> 
         <field name="category_id" ref="insurance_security.access_insurance_security_category" />
@@ -42,44 +40,77 @@
         <field name="perm_unlink">1</field>
     </record>
     
+    <!-- Access Insurance Agents -->
 
-    <!-- Access Insurance Type -->
-    <record id="access_insurance_security_type_admins" model="ir.model.access">
-        <field name="name">access.insurance.security.type.admins</field>
-        <field name="model_id" ref="model_insurance_security_type" />
+    <record id="access_insurance_security_agents_admins" model="ir.model.access">
+        <field name="name">access.insurance.security.agents.admins</field>
+        <field name="model_id" ref="model_insurance_security_agents" />
         <field name="group_id" ref="insurance_security.access_admins_insurance_security_group" />
-        <field name="perm_create">1</field>
         <field name="perm_read">1</field>
+        <field name="perm_create">1</field>
         <field name="perm_write">1</field>
         <field name="perm_unlink">1</field>
     </record>
 
-    <record id="access_insurance_security_type_customers" model="ir.model.access">
-        <field name="name">access.insurance.security.type.customers</field>
-        <field name="model_id" ref="model_insurance_security_type" />
-        <field name="group_id" ref="insurance_security.access_customers_insurance_security_group" />
-        <field name="perm_create">0</field>
-        <field name="perm_read">1</field>
-        <field name="perm_write">0</field>
-        <field name="perm_unlink">0</field>
-    </record>
-
-    <record id="access_insurance_security_type_agents" model="ir.model.access">
-        <field name="name">access.insurance.security.type.agents</field>
-        <field name="model_id" ref="model_insurance_security_type" />
+    <record id="access_insurance_security_agents_agents" model="ir.model.access">
+        <field name="name">access.insurance.security.agents.agents</field>
+        <field name="model_id" ref="model_insurance_security_agents" />
         <field name="group_id" ref="insurance_security.access_agents_insurance_security_group" />
-        <field name="perm_create">0</field>
         <field name="perm_read">1</field>
+        <field name="perm_create">0</field>
         <field name="perm_write">0</field>
         <field name="perm_unlink">0</field>
     </record>
 
-    <record id="access_insurance_security_type_portal" model="ir.model.access">
-        <field name="name">access.insurance.security.type.portal</field>
-        <field name="model_id" ref="model_insurance_security_type" />
+    <record id="access_insurance_security_agents_customers" model="ir.model.access">
+        <field name="name">access.insurance.security.agents.customers</field>
+        <field name="model_id" ref="model_insurance_security_agents" />
+        <field name="group_id" ref="insurance_security.access_customers_insurance_security_group" />
+        <field name="perm_read">0</field>
+        <field name="perm_create">0</field>
+        <field name="perm_write">0</field>
+        <field name="perm_unlink">0</field>
+    </record>
+
+    <!-- Access Insurance Clients -->
+
+    <record id="access_insurance_security_clients_admins" model="ir.model.access">
+        <field name="name">access.insurance.security.clients.admins</field>
+        <field name="model_id" ref="model_insurance_security_clients" />
+        <field name="group_id" ref="insurance_security.access_admins_insurance_security_group" />
+        <field name="perm_read">1</field>
+        <field name="perm_create">1</field>
+        <field name="perm_write">1</field>
+        <field name="perm_unlink">1</field>
+    </record>
+
+    <record id="access_insurance_security_clients_agents" model="ir.model.access">
+        <field name="name">access.insurance.security.clients.agents</field>
+        <field name="model_id" ref="model_insurance_security_clients" />
+        <field name="group_id" ref="insurance_security.access_agents_insurance_security_group" />
+        <field name="perm_read">1</field>
+        <field name="perm_create">0</field>
+        <field name="perm_write">0</field>
+        <field name="perm_unlink">0</field>
+    </record>
+
+    <record id="access_insurance_security_clients_customers" model="ir.model.access">
+        <field name="name">access.insurance.security.clients.customers</field>
+        <field name="model_id" ref="model_insurance_security_clients" />
+        <field name="group_id" ref="insurance_security.access_customers_insurance_security_group" />
+        <field name="perm_read">1</field>
+        <field name="perm_create">1</field>
+        <field name="perm_write">1</field>
+        <field name="perm_unlink">1</field>
+    </record>
+
+    <record id="access_insurance_security_clients_portal" model="ir.model.access">
+        <field name="name">access.insurance.security.clients.portal</field>
+        <field name="model_id" ref="model_insurance_security_clients" />
         <field name="group_id" ref="base.group_portal" />
         <field name="perm_read">1</field>
-    </record>
+    </record>s
+
 
     <!-- Access Insurance Policy -->
 
@@ -230,11 +261,11 @@
         <field name="perm_unlink">1</field>
     </record>
 
-    <!-- Access Insurance Products -->
+    <!-- Access Insurance carss -->
 
-    <!-- <record id="access_insurance_security_product_employee" model="ir.model.access">
-        <field name="name">access.insurance.security.product.employee</field>
-        <field name="model_id" ref="model_insurance_security_product" />
+    <!-- <record id="access_insurance_security_cars_employee" model="ir.model.access">
+        <field name="name">access.insurance.security.cars.employee</field>
+        <field name="model_id" ref="model_insurance_security_cars" />
         <field name="group_id" ref="base.group_user" />
         <field name="perm_read">1</field>
         <field name="perm_create">1</field>
@@ -242,9 +273,9 @@
         <field name="perm_unlink">1</field>
     </record> -->
 
-    <record id="access_insurance_security_product_admins" model="ir.model.access">
-        <field name="name">access.insurance.security.product.admins</field>
-        <field name="model_id" ref="model_insurance_security_product" />
+    <record id="access_insurance_security_cars_admins" model="ir.model.access">
+        <field name="name">access.insurance.security.cars.admins</field>
+        <field name="model_id" ref="model_insurance_security_cars" />
         <field name="group_id" ref="insurance_security.access_admins_insurance_security_group" />
         <field name="perm_read">1</field>
         <field name="perm_create">1</field>
@@ -252,19 +283,19 @@
         <field name="perm_unlink">1</field>
     </record> 
 
-    <record id="access_insurance_security_product_agents" model="ir.model.access">
-        <field name="name">access.insurance.security.product.agents</field>
-        <field name="model_id" ref="model_insurance_security_product" />
+    <record id="access_insurance_security_cars_agents" model="ir.model.access">
+        <field name="name">access.insurance.security.cars.agents</field>
+        <field name="model_id" ref="model_insurance_security_cars" />
         <field name="group_id" ref="insurance_security.access_agents_insurance_security_group" />
         <field name="perm_read">1</field>
-        <field name="perm_create">0</field>
-        <field name="perm_write">0</field>
-        <field name="perm_unlink">0</field>
+        <field name="perm_create">1</field>
+        <field name="perm_write">1</field>
+        <field name="perm_unlink">1</field>
     </record>
 
-    <record id="access_insurance_security_product_customers" model="ir.model.access">
-        <field name="name">access.insurance.security.product.customers</field>
-        <field name="model_id" ref="model_insurance_security_product" />
+    <record id="access_insurance_security_cars_customers" model="ir.model.access">
+        <field name="name">access.insurance.security.cars.customers</field>
+        <field name="model_id" ref="model_insurance_security_cars" />
         <field name="group_id" ref="insurance_security.access_customers_insurance_security_group" />
         <field name="perm_read">1</field>
         <field name="perm_create">0</field>
@@ -272,9 +303,9 @@
         <field name="perm_unlink">0</field>
     </record>
 
-    <record id="access_insurance_security_product_portal" model="ir.model.access">
-        <field name="name">access.insurance.security.product.portal</field>
-        <field name="model_id" ref="model_insurance_security_product" />
+    <record id="access_insurance_security_cars_portal" model="ir.model.access">
+        <field name="name">access.insurance.security.cars.portal</field>
+        <field name="model_id" ref="model_insurance_security_cars" />
         <field name="group_id" ref="base.group_portal" />
         <field name="perm_read">1</field>
         <field name="perm_write">0</field>
@@ -297,9 +328,9 @@
         <field name="model_id" ref="model_insurance_security_payments" />
         <field name="group_id" ref="insurance_security.access_customers_insurance_security_group" />
         <field name="perm_read">1</field>
-        <field name="perm_create">1</field>
-        <field name="perm_write">1</field>
-        <field name="perm_unlink">1</field>
+        <field name="perm_create">0</field>
+        <field name="perm_write">0</field>
+        <field name="perm_unlink">0</field>
     </record>
 
     <record id="access_insurance_security_payment_agents" model="ir.model.access">
@@ -338,7 +369,7 @@
         <field name="perm_read">1</field>
         <field name="perm_create">0</field>
         <field name="perm_write">1</field>
-        <field name="perm_unlink">0</field>
+        <field name="perm_unlink">1</field>
     </record>
 
     <record id="access_insurance_security_assistance_agents" model="ir.model.access">
@@ -369,6 +400,49 @@
         <field name="perm_create">1</field>
     </record>
 
+
+    <record id="access_for_insurance_security_policy" model="ir.rule">
+        <field name="name">Access Insurance Policy</field>
+        <field name="model_id" ref="model_insurance_security_policy" />
+        <field name="domain_force">[('client_id.related_partner.id', '=', user.partner_id.id)]</field>
+        <field name="groups" eval="[(4, ref('insurance_security.access_customers_insurance_security_group'))]"/>
+    </record>
+
+    <record id="access_for_insurance_security_clients" model="ir.rule">
+        <field name="name">Access Insurance Clients</field>
+        <field name="model_id" ref="model_insurance_security_clients" />
+        <field name="domain_force">[('related_partner.id', '=', user.partner_id.id)]</field>
+        <field name="groups" eval="[(4, ref('insurance_security.access_customers_insurance_security_group'))]"/>
+    </record>
+
+
+    <record id="access_for_insurance_security_claims" model="ir.rule">
+        <field name="name">Access Insurance Claims</field>
+        <field name="model_id" ref="model_insurance_security_claims" />
+        <field name="domain_force">[('client_id.related_partner.id', '=', user.partner_id.id)]</field>
+        <field name="groups" eval="[(4, ref('insurance_security.access_customers_insurance_security_group'))]"/>
+    </record>
+
+    <record id="access_for_insurance_security_cars" model="ir.rule">
+        <field name="name">Access Insurance cars</field>
+        <field name="model_id" ref="model_insurance_security_cars" />
+        <field name="domain_force">[('client_id.related_partner.id', '=', user.partner_id.id)]</field>
+        <field name="groups" eval="[(4, ref('insurance_security.access_customers_insurance_security_group'))]"/>
+    </record>
+
+    <record id="access_for_insurance_security_payments" model="ir.rule">
+        <field name="name">Access Insurance payments</field>
+        <field name="model_id" ref="model_insurance_security_payments" />
+        <field name="domain_force">[('client_id.related_partner.id', '=', user.partner_id.id)]</field>
+        <field name="groups" eval="[(4, ref('insurance_security.access_customers_insurance_security_group'))]"/>
+    </record>
+
+    <record id="access_for_insurance_security_assistance" model="ir.rule">
+        <field name="name">Access Insurance assistance</field>
+        <field name="model_id" ref="model_insurance_security_assistance" />
+        <field name="domain_force">[('user_id.id', '=', user.partner_id.id)]</field>
+        <field name="groups" eval="[(4, ref('insurance_security.access_customers_insurance_security_group'))]"/>
+    </record>
 
     <!-- <record id="access_for_insurance_security_demand" model="ir.rule">
         <field name="name">Access Insurance Demand</field>

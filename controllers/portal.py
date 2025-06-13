@@ -1,11 +1,27 @@
 from odoo.addons.portal.controllers.portal import CustomerPortal, pager
 from odoo.http import request
+from ..utils.cryptofpe import Crypto
 from odoo import http, _
 import re
+import logging
+
+_logger = logging.getLogger(__name__)
+
 
 
 
 class InsurancePortalAccount(CustomerPortal):
+
+    crypto = Crypto()
+    
+    def _decrypt_value(self, value):
+        """Déchiffre une valeur si elle n'est pas vide."""
+        print(value, 'valueT')
+        try:
+            return self.crypto.decrypt_data(value) 
+        except Exception as e:
+            _logger.error(f"Erreur lors du déchiffrement de la valeur: {e}")
+            return value
    
     def _prepare_home_portal_values(self, counters):
         values = super()._prepare_home_portal_values(counters)
@@ -40,23 +56,25 @@ class InsurancePortalAccount(CustomerPortal):
     @http.route(['/my/insurance'], type='http', website=True)
     def myInsuranceview(self, **kw):
         
-        insurance_policy_count = request.env['insurance.security.policy'].search_count([
-            ('client_id', '=', request.env.user.partner_id.id),
+        policies = request.env['insurance.security.policy'].search([
             ('state', '=', 'confirmed')
         ])
-        
-        
+
+        insurance_policy_count = insurance_policy_count = request.env['insurance.security.policy'].search_count([
+            ('client_id.related_partner.id', '=', request.env.user.partner_id.id)
+        ])
+
         insurance_demand_count = request.env['insurance.security.demand'].search_count([
             ('client_id', '=', request.env.user.partner_id.id)
         ])
         
         
         insurance_claims_count = request.env['insurance.security.claims'].search_count([
-            ('client_id', '=', request.env.user.partner_id.id)
+            ('client_id.related_partner.id', '=', request.env.user.partner_id.id)
         ])
 
         insurance_payments_count = request.env['insurance.security.payments'].search_count([
-            ('client_id', '=', request.env.user.partner_id.id)
+            ('client_id.related_partner.id', '=', request.env.user.partner_id.id)
         ])
 
         insurance_assistance_count = request.env['insurance.security.assistance'].search_count([
@@ -128,12 +146,12 @@ class InsurancePortalAccount(CustomerPortal):
         return request.render("insurance_security.portal_assistance_form_view", values)
 
     @http.route(['/my/insurance/policies', '/my/insurance/policies/page/<int:page>'], type='http', website=True)
-    def insuranceportalPolicyview(self, page=1, sortby=None, **kw):
-        
-        
+    def insuranceportalPolicyview(self, page=1, sortby=None, **kw):  
+        _encrypted_fields = ['name', 'duration',  'prime', 'agent_name', 'agent_phone', 'agent_email', 'client_name', 'client_phone', 'client_email']
+
         sorted_list = {
             'id': {'label' : _('ID'), 'order': 'id'},
-            'name': {'label' : _('Nom Assurance'), 'order': 'name'},
+            'name': {'label' : _('Numero de police'), 'order': 'name'},
         }
 
         if not sortby:
@@ -141,7 +159,7 @@ class InsurancePortalAccount(CustomerPortal):
 
         default_order_by = sorted_list[sortby]['order']
         total_policy = request.env['insurance.security.policy'].search_count([
-            ('client_id', '=', request.env.user.partner_id.id),
+            ('client_id.related_partner.id', '=', request.env.user.partner_id.id),
             ('state', '=', 'confirmed'),
             
         ])
@@ -153,7 +171,7 @@ class InsurancePortalAccount(CustomerPortal):
                             step=10)
 
         my_policy = request.env['insurance.security.policy'].sudo().search([
-            ('client_id', '=', request.env.user.partner_id.id),
+            ('client_id.related_partner.id', '=', request.env.user.partner_id.id),
             ('state', '=', 'confirmed'),
             ],
             limit=10,
@@ -161,7 +179,7 @@ class InsurancePortalAccount(CustomerPortal):
             offset=page_detail['offset'])
 
         values = {
-            'policies': my_policy, 
+            'policies': policies, 
             'page_name': 'portal_list_policies', 
             'pager': page_detail, 
             'searchbar_sortings': sorted_list,
@@ -173,9 +191,10 @@ class InsurancePortalAccount(CustomerPortal):
     def insuranceportalPolicyFormview(self, policy_id,  **kw):
         values = {'policy': policy_id, 'page_name': 'portal_policies_form_view'}
         my_policy = request.env['insurance.security.policy'].sudo().search([
-            ('client_id', '=', request.env.user.partner_id.id),
+            ('client_id.related_partner.id', '=', request.env.user.partner_id.id),
             ('state', '=', 'confirmed'),
             ])
+
         policy_ids = my_policy.ids
         policy_index = policy_ids.index(policy_id.id)
         if policy_index != 0 and policy_ids[policy_index - 1]:
@@ -255,7 +274,7 @@ class InsurancePortalAccount(CustomerPortal):
 
         default_order_by = sorted_list[sortby]['order']
         total_claims = request.env['insurance.security.claims'].search_count([
-            ('client_id', '=', request.env.user.partner_id.id),
+            ('client_id.related_partner.id', '=', request.env.user.partner_id.id),
             
         ])
 
@@ -266,7 +285,7 @@ class InsurancePortalAccount(CustomerPortal):
                             step=10)
 
         my_claims = request.env['insurance.security.claims'].search([
-            ('client_id', '=', request.env.user.partner_id.id),
+            ('client_id.related_partner.id', '=', request.env.user.partner_id.id),
             ],
             limit=10,
             order=default_order_by,
@@ -285,7 +304,7 @@ class InsurancePortalAccount(CustomerPortal):
     def insuranceportalClaimFormview(self, claim_id,  **kw):
         values = {'claim': claim_id, 'page_name': 'portal_claims_form_view'}
         my_claim = request.env['insurance.security.claims'].search([
-            ('client_id', '=', request.env.user.partner_id.id),
+            ('client_id.related_partner.id', '=', request.env.user.partner_id.id),
             ])
         claim_ids = my_claim.ids
         claim_index = claim_ids.index(claim_id.id)
@@ -295,33 +314,6 @@ class InsurancePortalAccount(CustomerPortal):
             values['next_record'] = '/my/insurance/claims/{}'.format(claim_ids[claim_index+1])        
 
         return request.render("insurance_security.portal_claim_form_view", values)
-
-    """ Liste des produits d'assurance disponible """
-    @http.route(['/my/insurance/demands/new/demand/products'], type='http', website=True)
-    def listProductsview(self, **kw):
-        
-        products = request.env['insurance.security.product'].search([])
-        values = {
-            'products': products, 
-            'page_name': 'portal_list_products', 
-            }
-        return request.render("insurance_security.portal_list_products", values)
-
-    """ Affichage d'un produit d'assurance disponible """
-    @http.route(['/my/insurance/new/demand/products/<model("insurance.security.product"):product_id>'], type='http', website=True)
-    def insuranceportalProductsDescription(self, product_id,  **kw):
-        values = {
-            'product': product_id, 
-            'page_name': 'portal_product_description_view'}
-        my_product= request.env['insurance.security.product'].search([])
-        product_ids = my_product.ids
-        product_index = product_ids.index(product_id.id)
-        if product_index != 0 and product_ids[product_index - 1]:
-            values['prev_record'] = '/my/insurance/new/demand/products/{}'.format(product_ids[product_index-1])
-        if product_index < len(product_ids) - 1 and product_ids[product_index+1]:
-            values['next_record'] = '/my/insurance/new/demand/products/{}'.format(product_ids[product_index+1])        
-
-        return request.render("insurance_security.portal_product_description_view", values)
 
     """ form new assistance """
     @http.route(['/my/insurance/assistances/new'], type='http', methods=["POST", "GET"], website=True)
@@ -372,21 +364,23 @@ class InsurancePortalAccount(CustomerPortal):
         return request.render("insurance_security.portal_new_demand_assistance", values)
 
     """ form new demand """
-    @http.route(['/my/insurance/demands/new/demandproduct/<model("insurance.security.product"):product_id>'], type='http', methods=["POST", "GET"], website=True)
-    def registerDemandinsurance(self, product_id, **kw):
-        products = request.env['insurance.security.product'].search([])
+    @http.route(['/my/insurance/demands/new'], type='http', methods=["POST", "GET"], website=True)
+    def registerDemandinsurance(self, **kw):
+    
         values = {
             'page_name': 'portal_new_demand_insurance', 
-            'products': products,
-            'product': product_id, 
         }
         
         if request.httprequest.method == "POST":
             error_list = []
             if not kw.get("name"):
-                error_list.append("Name field is mandatory. ")
+                error_list.append("Specify the title ")
+
+            if not kw.get("cars_number"):
+                error_list.append("Number of cars is mandatory. ")
+
             if not kw.get("description"):
-                error_list.append("Description field is mandatory. ")
+                error_list.append("You should specify your motivation ")
             
             if not kw.get("proofs"):
                 error_list.append("Proofs field is mandatory. ")
@@ -398,18 +392,17 @@ class InsurancePortalAccount(CustomerPortal):
                         'type': 'binary',
                         'datas': file.read(),
                         'res_model': 'insurance.security.demand',
-                        'res_id' : product_id.id
                     })
                     attachment_ids.append(attachment.id)
                 request.env['insurance.security.demand'].sudo().create({
                     "name": kw.get("name"),
                     "client_id": request.env.user.partner_id.id,
                     "description": kw.get("description"),
-                    "product_id": product_id.id,
+                    "cars_number": kw.get("cars_number"),
                     "proofs" : [(6, 0,attachment_ids )]    
                 })
                 
-                success = "Demande de police d'assurance envoyée avec succès!"
+                success = "Demande de police d'assurance auto envoyée avec succès!"
                 return request.redirect('/my/insurance/demands?message=' + success)
                 
             else:
@@ -477,7 +470,7 @@ class InsurancePortalAccount(CustomerPortal):
 
         default_order_by = sorted_list[sortby]['order']
         total_payments = request.env['insurance.security.payments'].search_count([
-            ('client_id', '=', request.env.user.partner_id.id),
+            ('client_id.related_partner.id', '=', request.env.user.partner_id.id),
             
         ])
 
@@ -488,7 +481,7 @@ class InsurancePortalAccount(CustomerPortal):
                             step=10)
 
         my_payments = request.env['insurance.security.payments'].search([
-            ('client_id', '=', request.env.user.partner_id.id),
+            ('client_id.related_partner.id', '=', request.env.user.partner_id.id),
             ],
             limit=10,
             order=default_order_by,
@@ -509,7 +502,7 @@ class InsurancePortalAccount(CustomerPortal):
             'payment': payment_id, 
             'page_name': 'portal_payments_form_view'}
         my_payment= request.env['insurance.security.payments'].search([
-            ('client_id', '=', request.env.user.partner_id.id),
+            ('client_id.related_partner.id', '=', request.env.user.partner_id.id),
             ])
         payment_ids = my_payment.ids
         payment_index = payment_ids.index(payment_id.id)

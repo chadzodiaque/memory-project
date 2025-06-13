@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <record id="insurance_security_agents_action" model="ir.actions.act_window">
+        <field name="name">Agents d'assurance</field>
+        <field name="res_model">insurance.security.agents</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+            Aucun agents
+            </p>
+        </field>
+    </record>
+
+    <record id="insurance_security_agents_view_tree" model="ir.ui.view">
+        <field name="name">insurance.security.agents.tree</field>
+        <field name="model">insurance.security.agents</field>
+        <field name="arch" type="xml">
+            <tree string="Agents Tree">
+                <field name="name"/>
+                <field name="sex"/>
+                <field name="email"/>
+                <field name="phone"/>
+                <field name="adress"/>
+                <field name="country"/>
+                <field name="nationality"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="insurance_security_agents_view_form" model="ir.ui.view">
+        <field name="name">insurance.security.agents.view.form</field>
+        <field name="model">insurance.security.agents</field>
+        <field name="arch" type="xml">
+            <form string="Insurance security agents">
+                
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" class="oe_view_only"/>
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    
+                   <group>
+                        <group>
+                            <field name="related_agent" options="{'no_create': True}"/>
+                            <field name="email"/>
+                            <field name="phone"/>
+                            
+                        </group>
+                        <group>
+                            <field name="sex"/>
+                            <field name="adress"/>
+                            <field name="country"/>
+                            <field name="nationality"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="insurance_security_policy" string="Liste des polices d'assurances">
+                            <field name="policy_ids" options="{'no_create': True}"  />
+                        </page>
+                        <page string="Documents importants">
+                            <field name="proofs" widget="many2many_binary"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+</odoo>

@@ -7,7 +7,7 @@
         <field name="view_mode">tree,form</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
-            Aucun police d'assurance 
+            Aucune police d'assurance 
             </p>
         </field>
     </record>
@@ -19,9 +19,16 @@
             <tree string="Policies Tree">
                 <field name="name"/>
                 <field name="duration"/>
-                <field name="product_prime_price"/>
-                <field name="product_amount_guarantee"/>
-                <field name="product_name" />
+                <field name="start_date"/>
+                <field name="end_date"/>
+                <field name="state"/>
+                <field name="prime"/>
+                <field name="agent_name"/>
+                <field name="agent_phone"/>
+                <field name="agent_email"/>
+                <field name="client_name"/>
+                <field name="client_phone"/>
+                <field name="client_email"/>
             </tree>
         </field>
     </record>
@@ -34,6 +41,8 @@
                 <header>
                     <button name="confirm_insurance" string="Confirmer " type="object"
                                states="progress" class="oe_highlight"/>
+                    <button name="action_send_email" string="Send Email"
+                            states="confirmed" class="oe_highlight" type="object"/>
                     <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
@@ -51,24 +60,21 @@
                             <field name="client_phone" />
                             <field name="client_email" />
                         </group>
-                        <group string="Détails sur la police ">
-                            <field name="product_id"  options="{'no_create': True}"  />
-                            <field name="product_name"/>
-                            <field name="product_type"/>
-                            <field name="commission" widget="percentage"/>
-                            <field name="duration"/>
-                            <field name="start_date" />
-                            <field name="end_date" />
-                            <field name="product_coverage_for"/>
-                            <field name="currency_id" invisible="1"/>
-                            <field name="product_prime_price" widget="monetary"/>
-                            <field name="product_amount_guarantee" widget="monetary"/>
-                        </group>
+                        
                         <group string="Détails sur l'agent">
                             <field name="agent_id"  options="{'no_create': True}"  />
                             <field name="agent_name" />
                             <field name="agent_phone" />
                             <field name="agent_email" />
+                        </group>
+
+                        <group string="Détails sur la police d'assurance">
+                            <field name="duration"/>
+                            <field name="start_date"/>
+                            <field name="end_date"/>
+                            <field name="state"/>
+                            <field name="currency_id" />
+                            <field name="prime" widget="monetary"  />
                         </group>
                     </group>
                     <notebook>
@@ -76,11 +82,33 @@
                             <field name="conditions" />
                         </page>
                         <page string="Règlements de l'agence et autre document">
-                            <field name="proofs" widget="many2many_binary"/>
+                            <field name="regulations" widget="many2many_binary"/>
                         </page>
                     </notebook>
                 </sheet>
             </form>
+        </field>
+    </record>
+
+    <record id="insurance_security_policy_email_template" model="mail.template">
+        <field name="name">EMAIL POLICY TEMPLATE NAME</field>
+        <field name="model">insurance.security.policy</field>
+        <field name="email_from">{{ object.agent_email }}</field>
+        <field name="email_to">{{ object.client_email }}</field>
+        <field name="subject">Nouvelle police d'assurance {{ object.name }}</field>
+        <field name="body_html" type="html">
+            <div style="margin: 0px; padding: 0px;">
+                <div style="margin: 0px; padding: 0px;">
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        Dear {{ client.name }},<br/>
+                        <br/>
+                        Votre Nouvelle police d'assurance {{ object.name }} a été crée. <br/>
+                        <br/>
+                        Regards,<br/>
+                        {{ object.agent_id.company_id.name }}
+                    </p>
+                </div>
+            </div>
         </field>
     </record>
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <record id="seq_insurance_security_product" model="ir.sequence">
+        <record id="seq_insurance_security_policy" model="ir.sequence">
             <field name="name">Police insurance</field>
             <field name="code">policy.details</field>
             <field name="prefix">INS/</field>
@@ -29,6 +29,14 @@
             <field name="name">Payments insurance</field>
             <field name="code">payments.details</field>
             <field name="prefix">PAY/</field>
+            <field name="padding">3</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <record id="seq_insurance_security_cars" model="ir.sequence">
+            <field name="name">Car insurance</field>
+            <field name="code">car.details</field>
+            <field name="prefix">CAR/</field>
             <field name="padding">3</field>
             <field name="company_id" eval="False"/>
         </record>

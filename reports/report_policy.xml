@@ -45,10 +45,7 @@
                                         <strong>Temps d'émission de la police  :</strong> <span t-field="policy.duration"/> month<br/>
                                         <strong>Date de début :</strong> <span t-field="policy.start_date"/><br/>
                                         <strong>Date de fin :</strong> <span t-field="policy.end_date"/><br/>
-                                        <strong>Commission en pourcentage :</strong> <span t-field="policy.duration"/> %<br/>
-                                        <strong>Type de couvrement :</strong> <span t-field="policy.product_coverage_for"/><br/>
-                                        <strong>Prime d'assurance :</strong> <span t-field="policy.product_prime_price"/> <span t-field="policy.currency_id"/><br/>
-                                        <strong>Montant garantie :</strong> <span t-field="policy.product_amount_guarantee"/> <span t-field="policy.currency_id"/><br/>
+                                        
                                     </td>
                                 </tr>
                                 <tr>

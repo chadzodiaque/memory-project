@@ -2,12 +2,12 @@
 
 <odoo>
     <record id="insurance_security_claims_action" model="ir.actions.act_window">
-        <field name="name">Réclamation d'assurance</field>
+        <field name="name">Compensation d'assurance</field>
         <field name="res_model">insurance.security.claims</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
-            Aucune réclamations émis par un client
+            Aucune sinistres enregistrée
             </p>
         </field>
     </record>
@@ -19,7 +19,7 @@
             <tree string="Claims Tree">
                 <field name="name"/>
                 <field name="date_claims"/>
-                <field name="amount"/>
+                <field name="compensation"/>
                 <field name="state"/>
             </tree>
         </field>
@@ -53,9 +53,6 @@
                             <field name="policy_name" />
                             <field name="policy_start_date" />
                             <field name="policy_end_date" />
-                            <field name="policy_product_name" />
-                            <field name="currency_id" invisible="1" />
-                            <field name="amount"  widget ="monetary" />
                             <field name="date_claims" />
                         </group>
 
@@ -72,15 +69,17 @@
                             <field name="agent_email" />
                         </group>
 
-                        <group string="Date ">
+                        <group string="Détails sur le sinistre">
                             <field name="date_claims" />
+                            <field name="currency_id" />
+                            <field name="compensation" widget="monetary" />
                         </group>
                     </group>
                     <notebook>
-                        <page string="Détails de réclamation">
+                        <page string="Détails sur le sinistre">
                             <field name="description" />
                         </page>
-                        <page string="Preuve en appui">
+                        <page string="Preuve du sinistre">
                             <field name="proofs" widget="many2many_binary"/>
                         </page>
                     </notebook>
