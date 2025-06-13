@@ -1,27 +1,3 @@
 Cette application permet la gestion des assurances de tout individu 
 de manière sécurisée tout en suivant la norme OWASP en terme de développement d'applications.
 
-Voici les différents classes de cette application : 
-a- InsuranceType 
-    Définit le type d'assurance et ses propriétées (Vie, Automobile, etc ...). Comme propriété, nous avons : 
-    -  Nom 
-    -  description : fields.Text("Description")
-    -  risk : Les risques dont couvrent cette assurance
-
-b- InsurancePolicy
-    Définit la police d'assurance a définit pour un individu. Ses propriété sont  :
-    - policy_number : Le numéro de police
-    - start_date et end_date : La date de début et de fin de la police d'assurance
-    - guaranteed_date : La date à laquelle la couverture d'une police d'assurance commence à être en vigueur
-    - prime_price :  montant d'argent que l'assuré doit payer à l'assureur pour bénéficier de la couverture d'assurance.
-    - amount_guarantee : Le montant garanti est la somme maximale que l'assureur s'engage à payer à l'assuré en cas de survenance d'un événement assuré.
-    - conditions : Les conditions de l'assurance
-
-c- InsuranceClaims
-    Définit les réclamations faite par un assuré  pour avoir son montant d'assurance
-
-d- InsuranceWorkflow
-    Gère les statuts des détails d'assurance et réclamations d'assurance
-
-e- InsuranceDetails
-    Contient les informations qu'un client fourni pour avoir une police d'assurance
