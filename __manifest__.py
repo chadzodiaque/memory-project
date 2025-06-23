@@ -1,6 +1,7 @@
 {
     'name': 'Insurrance Security',
     'installable' : True,
+    'author': 'Achhad O.',
     'application' : True,
     'depends': ['base', 'hr', 'portal', 'muk_web_theme'],
     'data' : [
@@ -13,10 +14,10 @@
         'views/insurance_security_policy_views.xml',
         'views/insurance_security_demand_views.xml',
         'views/insurance_security_claims_views.xml',
-        'views/insurance_security_menus.xml',
         'views/insurance_security_payments_views.xml',
         'views/insurance_security_agents_views.xml',
         'views/insurance_security_clients_views.xml',
+        'views/insurance_security_menus.xml',
         'views/insurance_sequence.xml',  
         'views/portal_templates.xml',
 
