@@ -1,6 +1,7 @@
 {
-    'name': 'Insurrance Security',
+    'name': 'Insurance Security',
     'installable' : True,
+    'version': '16.0.1.0.2',
     'author': 'Achhad O.',
     'application' : True,
     'depends': ['base', 'hr', 'portal', 'muk_web_theme'],
@@ -20,7 +21,6 @@
         'views/insurance_security_menus.xml',
         'views/insurance_sequence.xml',  
         'views/portal_templates.xml',
-
     ],
     
 }
